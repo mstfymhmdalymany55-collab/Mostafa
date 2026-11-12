@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TrustGuard AI — كاشف الاحتيال الشامل</title>
+<meta id="metaDesc" name="description" content="الصق رابطًا أو رسالة أو رقم هاتف مشبوهًا. يعرض TrustGuard AI علامات التحذير ويشرح أهميتها وما يجب أن تفعله.">
+<style>
+:root{--bg:#0a1628;--panel:#13233f;--line:#2a3f66;--tx:#e8f0fb;--mut:#a9b9d0;--cy:#22d3ee;--ok:#34d399;--warn:#fbbf24;--bad:#fb7185}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--tx);font:17px/1.7 system-ui,-apple-system,"Segoe UI",Tahoma,"Noto Sans Arabic","Noto Naskh Arabic",Arial,sans-serif}
+html[lang="ar"] .en,html[lang="en"] .ar{display:none!important}
+a{color:var(--cy)}
+hr{border:0;border-top:1px solid var(--line);margin:12px 0}
+.skip{position:absolute;inset-inline-start:-999px}.skip:focus{inset-inline-start:8px;top:8px;background:#fff;color:#000;padding:8px;z-index:9}
+:focus-visible{outline:3px solid var(--cy);outline-offset:2px}
+.top{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;padding:12px 5vw;border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(10,22,40,.96);z-index:5}
+.brand{display:flex;gap:8px;align-items:center;color:var(--tx);text-decoration:none;font-weight:700;font-size:1.15rem}.brand b{color:var(--cy)}
+.ctl{display:flex;gap:8px;align-items:center}
+nav{display:flex;flex-wrap:wrap;gap:4px}
+nav a{color:var(--tx);text-decoration:none;padding:8px 12px;border-radius:8px}
+nav a:hover,nav a[aria-current=page]{background:var(--panel);color:var(--cy)}
+main{max-width:1000px;margin:0 auto;padding:24px 5vw 40px}
+h1{font-size:clamp(1.8rem,5vw,2.8rem);line-height:1.15;margin:.3em 0}h2{margin-top:1.8em}h1:focus{outline:none}
+.eyebrow{color:var(--cy);font-weight:600;letter-spacing:.04em}
+.lead{font-size:1.15rem;color:var(--mut)}.note{color:var(--mut);font-size:.9rem}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.card{display:block;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px;color:var(--tx);text-decoration:none}
+a.card:hover{border-color:var(--cy)}.card h3{margin:.1em 0 .3em;color:var(--cy)}
+.card+.card{margin-top:14px}.card h2{margin-top:0}
+.grid3 .card+.card{margin-top:0}
+label{display:block;font-weight:600;margin:12px 0 4px}
+input,textarea{width:100%;background:var(--bg);color:var(--tx);border:1px solid var(--line);border-radius:8px;padding:10px;font:inherit;unicode-bidi:plaintext}
+.btn{display:inline-block;background:var(--cy);color:#04202b;border:0;border-radius:8px;padding:11px 20px;font:inherit;font-weight:700;text-decoration:none;cursor:pointer;min-height:44px;margin-block:10px 4px;margin-inline-end:8px}
+.btn.ghost{background:transparent;color:var(--cy);border:1px solid var(--cy)}
+.btn.lg{font-size:1.1rem;padding:13px 28px}
+.btn.sm{padding:6px 14px;min-height:36px;margin:0}
+.chip{background:var(--bg);color:var(--tx);border:1px solid var(--line);border-radius:20px;padding:8px 14px;font:inherit;cursor:pointer;margin-block:0 6px;margin-inline-end:6px}.chip:hover{border-color:var(--cy)}
+.err{color:var(--bad);min-height:1.2em;margin:8px 0 0}
+.res{border-inline-start:6px solid var(--line)}
+.res.low{border-color:var(--ok)}.res.mid{border-color:var(--warn)}.res.high{border-color:var(--bad)}
+.cat{font-size:1.3rem;font-weight:700;margin:0}
+.low .cat{color:var(--ok)}.mid .cat{color:var(--warn)}.high .cat{color:var(--bad)}
+.verdict{font-size:1.15rem;font-weight:600}
+.meter{height:10px;background:var(--bg);border-radius:6px;overflow:hidden;margin:10px 0}.meter i{display:block;height:100%;background:currentColor}
+.ind{border-top:1px solid var(--line);padding:12px 0}.ind h3{margin:0 0 4px;color:var(--tx);font-size:1.05rem}
+.url{word-break:break-all;background:var(--bg);padding:8px;border-radius:8px;font-family:ui-monospace,Menlo,monospace;font-size:.9rem;direction:ltr;text-align:left;unicode-bidi:plaintext}
+details{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 16px;margin:10px 0}summary{cursor:pointer;font-weight:600}
+.opt{display:block;width:100%;text-align:start;background:var(--bg);color:var(--tx);border:1px solid var(--line);border-radius:8px;padding:12px;margin:8px 0;font:inherit;cursor:pointer;min-height:44px}
+.opt:disabled{cursor:default}.opt.right{border-color:var(--ok)}.opt.wrong{border-color:var(--bad)}
+.bar{height:6px;background:var(--bg);border-radius:4px}.bar i{display:block;height:100%;background:var(--cy);border-radius:4px}
+footer{border-top:1px solid var(--line);padding:16px 5vw;color:var(--mut);text-align:center;font-size:.9rem}
+.menu{display:none;background:var(--panel);color:var(--tx);border:1px solid var(--line);border-radius:8px;padding:10px 14px;font:inherit;cursor:pointer}
+@media(max-width:860px){.menu{display:block}nav{display:none;width:100%;order:3;flex-direction:column}nav.open{display:flex}}
+@media(max-width:560px){.top{padding:10px 4vw}nav a{padding:8px;font-size:.9rem}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+.big textarea{min-height:190px;font-size:1.05rem}
+.banner{margin:18px 0;padding:14px 16px;border:1px solid var(--line);border-inline-start:6px solid var(--cy);border-radius:10px;background:var(--panel)}
+.preview{white-space:pre-wrap;word-break:break-word;background:var(--bg);padding:12px;border-radius:8px;border:1px solid var(--line)}
+.mk{padding:0 2px;border-radius:4px}
+.mk.bad{background:rgba(251,113,133,.22);text-decoration:underline wavy var(--bad)}
+.mk.url{background:rgba(34,211,238,.2);text-decoration:underline solid var(--cy)}
+.mk.ph{background:rgba(251,191,36,.22);text-decoration:underline dashed var(--warn)}
+.legend{font-size:.9rem;color:var(--mut)}
+.tag{display:inline-block;border:1px solid var(--line);border-radius:12px;padding:1px 10px;font-size:.85rem;color:var(--mut);margin-inline-end:6px}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:2px 14px;font-size:.95rem}.kv dt{color:var(--mut)}.kv dd{margin:0;word-break:break-all;unicode-bidi:plaintext}
+.phr{font-family:ui-monospace,Menlo,monospace;background:var(--bg);padding:1px 6px;border-radius:5px;margin-inline-end:4px;display:inline-block}
+ul{padding-inline-start:1.4em}
+</style>
+</head>
+<body>
+<a class="skip" href="#main"><span class="ar">تخطَّ إلى المحتوى</span><span class="en">Skip to content</span></a>
+<header class="top">
+  <a class="brand" href="#home" data-al-ar="TrustGuard AI — الرئيسية" data-al-en="TrustGuard AI — home">
+    <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><path d="M16 2 4 7v8c0 7.5 5 13 12 15 7-2 12-7.5 12-15V7z" fill="#0e2a47" stroke="#22d3ee" stroke-width="2"/><path d="m10.5 16 4 4 7-8" fill="none" stroke="#22d3ee" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <span dir="ltr">TrustGuard <b>AI</b></span></a>
+  <nav id="nav" data-al-ar="القائمة الرئيسية" data-al-en="Main">
+    <a href="#home"><span class="ar">الكاشف الشامل</span><span class="en">Universal Detector</span></a>
+    <a href="#link"><span class="ar">فاحص الروابط</span><span class="en">Link Scanner</span></a>
+    <a href="#message"><span class="ar">محلل الرسائل</span><span class="en">Message Analyzer</span></a>
+    <a href="#phone"><span class="ar">فاحص الأرقام</span><span class="en">Phone Checker</span></a>
+    <a href="#learn">مركز التعلّم</a>
+    <a href="#quiz"><span class="ar">الاختبار</span><span class="en">Quiz</span></a>
+    <a href="#about"><span class="ar">عن المشروع</span><span class="en">About</span></a>
+  </nav>
+  <div class="ctl">
+    <button id="langBtn" class="btn ghost sm" type="button"></button>
+    <button id="menuBtn" class="menu" type="button" aria-expanded="false" aria-controls="nav"><span class="ar">القائمة</span><span class="en">Menu</span></button>
+  </div>
+</header>
+<main id="main">
+
+<section class="page" id="p-home">
+  <p class="eyebrow"><span class="ar">فكّر قبل أن تضغط. ابقَ آمنًا على الإنترنت.</span><span class="en">Think Before You Click. Stay Safe Online.</span></p>
+  <h1 tabindex="-1"><span class="ar">كاشف الاحتيال الشامل</span><span class="en">Universal Scam Detector</span></h1>
+  <p class="lead"><span class="ar">الصق أي شيء مشبوه: رقم هاتف، رسالة، رابط، أو كلها معًا. يكتشف TrustGuard AI كل عنصر ويحلّلها معًا، ثم يعرض لك علامات التحذير وما يجب فعله.</span><span class="en">Paste anything suspicious: a phone number, a message, a link, or all of them together. TrustGuard AI finds every element, analyzes them together, and shows you the warning signs and what to do.</span></p>
+  <form id="uniForm" novalidate class="card big">
+    <label for="uniIn"><span class="ar">الصق المحتوى المشبوه هنا</span><span class="en">Paste the suspicious content here</span></label>
+    <textarea id="uniIn" rows="8" maxlength="5000" data-ph-ar="مثال: رسالة من واتساب أو SMS أو فيسبوك أو بريد إلكتروني، أو رابط، أو رقم هاتف، أو خليط منها" data-ph-en="Example: a WhatsApp, SMS, Facebook or email message, a link, a phone number, or a mix of them"></textarea>
+    <p class="err" id="uniErr" role="alert"></p>
+    <button class="btn lg" type="submit"><span class="ar">حلّل الآن</span><span class="en">Analyze Now</span></button> <button class="btn ghost" type="button" id="uniReset"><span class="ar">مسح</span><span class="en">Clear</span></button>
+    <p class="note"><span class="ar">أمثلة تجريبية محاكاة (وهمية وليست عمليات احتيال أو أرقامًا حقيقية):</span><span class="en">Simulated demo examples (fictional, not real scams or real numbers):</span></p>
+    <p class="demos">
+      <button type="button" class="chip" data-demo="bank"><span class="ar">تنبيه بنكي + رابط + رقم</span><span class="en">Bank alert + link + number</span></button>
+      <button type="button" class="chip" data-demo="delivery"><span class="ar">إشعار توصيل</span><span class="en">Delivery notice</span></button>
+      <button type="button" class="chip" data-demo="prize"><span class="ar">رسالة جائزة</span><span class="en">Prize message</span></button>
+      <button type="button" class="chip" data-demo="other"><span class="ar">رسالة بالإنجليزية</span><span class="en">Arabic message</span></button>
+      <button type="button" class="chip" data-demo="phone"><span class="ar">رقم هاتف فقط</span><span class="en">Phone number only</span></button>
+      <button type="button" class="chip" data-demo="normal"><span class="ar">رسالة عادية</span><span class="en">Normal message</span></button>
+    </p>
+    <p class="note"><span class="ar">يتم التحليل كله داخل متصفحك. لا يُرسل شيء ولا يُحفظ ولا يُفتح: الروابط لا تُزار أبدًا والأرقام لا يُتصل بها. من فضلك لا تلصق كلمات مرور أو رموزًا.</span><span class="en">Everything is analyzed in your browser. Nothing is sent, saved or opened: links are never visited and numbers are never called. Please do not paste passwords or codes.</span></p>
+  </form>
+  <div class="banner"><span class="ar"><b>كيف تقرأ النتائج:</b> يعرض TrustGuard AI <b>علامات تحذير</b> وجدتها قواعد واضحة. وهي ليست بلاغات احتيال موثّقة. يعتمد على تحليل بقواعد وليس على نموذج ذكاء اصطناعي مُدرَّب، ولا يستطيع كشف كل أنواع الاحتيال.</span><span class="en"><b>How to read the results:</b> TrustGuard AI shows <b>warning signs</b> found by transparent rules. They are not verified scam reports. It uses rule-based analysis, not a trained AI model, and it cannot detect every scam.</span></div>
+  <h2><span class="ar">أو استخدم أداة متخصصة</span><span class="en">Or use a focused tool</span></h2>
+  <div class="grid3">
+    <a class="card" href="#link"><h3><span class="ar">فاحص الروابط</span><span class="en">Link Scanner</span></h3><p><span class="ar">فكّك الرابط وانظر لماذا تبدو أجزاء منه خطرة.</span><span class="en">Take a link apart and see why parts of it look risky.</span></p></a>
+    <a class="card" href="#message"><h3><span class="ar">محلل الرسائل</span><span class="en">Message Analyzer</span></h3><p><span class="ar">يميّز العبارات المشبوهة في الرسالة ويشرحها.</span><span class="en">Highlights suspicious phrases in a message and explains them.</span></p></a>
+    <a class="card" href="#phone"><h3><span class="ar">فاحص الأرقام</span><span class="en">Phone Checker</span></h3><p><span class="ar">يفحص صيغة الرقم ورمز دولته.</span><span class="en">Checks the format and country code of a number.</span></p></a>
+    <a class="card" href="#learn" lang="ar" dir="rtl"><h3>مركز التعلّم</h3><p>أدلة قصيرة لاكتشاف الاحتيال.</p></a>
+    <a class="card" href="#quiz"><h3><span class="ar">اختبار الأمان</span><span class="en">Safety Quiz</span></h3><p><span class="ar">عشرة أسئلة بسيناريوهات وتصحيح فوري.</span><span class="en">Ten scenario questions with instant feedback.</span></p></a>
+  </div>
+</section>
+
+<section class="page" id="p-dashboard" hidden>
+  <h1 tabindex="-1"><span class="ar">لوحة النتائج</span><span class="en">Results Dashboard</span></h1>
+  <div id="dashBox" role="region" aria-live="polite" data-al-ar="نتائج التحليل" data-al-en="Analysis results"></div>
+  <p><a class="btn" href="#home" data-again><span class="ar">حلّل شيئًا آخر</span><span class="en">Analyze something else</span></a> <a class="btn ghost" href="#learn" lang="ar" dir="rtl">افتح مركز التعلّم</a></p>
+</section>
+
+<section class="page" id="p-link" hidden>
+  <h1 tabindex="-1"><span class="ar">فاحص الروابط</span><span class="en">Link Scanner</span></h1>
+  <p class="lead"><span class="ar">الصق رابطًا. يُحلَّل كنص فقط ولا يُفتح أبدًا. وإن وصل مع رسالة فالصقها أيضًا للحصول على تحليل مشترك.</span><span class="en">Paste a link. It is analyzed as text only and never opened. If it came with a message, paste that too for a combined analysis.</span></p>
+  <form id="linkForm" novalidate class="card">
+    <label for="linkIn"><span class="ar">الرابط (URL)</span><span class="en">Link (URL)</span></label>
+    <input id="linkIn" type="text" dir="ltr" maxlength="2048" autocomplete="off" spellcheck="false" placeholder="https://example.com/">
+    <label for="linkMsg"><span class="ar">الرسالة التي وصل معها (اختياري)</span><span class="en">Message that came with it (optional)</span></label>
+    <textarea id="linkMsg" rows="3" maxlength="3000" data-ph-ar="الصق نص الرسالة هنا" data-ph-en="Paste the message text here"></textarea>
+    <p class="err" id="linkErr" role="alert"></p>
+    <button class="btn" type="submit"><span class="ar">افحص الرابط</span><span class="en">Scan link</span></button> <button class="btn ghost" type="button" data-clear="linkIn,linkMsg,linkErr"><span class="ar">مسح</span><span class="en">Clear</span></button>
+    <p class="demos"><button type="button" class="chip" data-fill="linkIn" data-val="https://login.example.com.account-check.invalid/verify"><span class="ar">مثال: رابط غير معتاد</span><span class="en">Demo: unusual link</span></button> <button type="button" class="chip" data-fill="linkIn" data-val="https://example.com/"><span class="ar">مثال: بدون علامات واضحة</span><span class="en">Demo: no obvious signs</span></button></p>
+  </form>
+</section>
+
+<section class="page" id="p-message" hidden>
+  <h1 tabindex="-1"><span class="ar">محلل الرسائل</span><span class="en">Message Analyzer</span></h1>
+  <p class="lead"><span class="ar">الصق رسالة من واتساب أو SMS أو فيسبوك أو البريد أو أي تطبيق. تُكتشف الروابط وأرقام الهاتف داخلها وتُحلَّل أيضًا. يدعم الصياغة العربية والإنجليزية.</span><span class="en">Paste a message from WhatsApp, SMS, Facebook, email or any app. Links and phone numbers inside it are found and analyzed too. English and Arabic wording are supported.</span></p>
+  <form id="msgForm" novalidate class="card">
+    <label for="msgIn"><span class="ar">الرسالة</span><span class="en">Message</span></label>
+    <textarea id="msgIn" rows="7" maxlength="5000" data-ph-ar="الصق الرسالة هنا" data-ph-en="Paste the message here"></textarea>
+    <p class="err" id="msgErr" role="alert"></p>
+    <button class="btn" type="submit"><span class="ar">حلّل الرسالة</span><span class="en">Analyze message</span></button> <button class="btn ghost" type="button" data-clear="msgIn,msgErr"><span class="ar">مسح</span><span class="en">Clear</span></button>
+    <p class="demos"><button type="button" class="chip" data-demo-msg="delivery"><span class="ar">مثال: إشعار توصيل</span><span class="en">Demo: delivery notice</span></button> <button type="button" class="chip" data-demo-msg="prize"><span class="ar">مثال: رسالة جائزة</span><span class="en">Demo: prize message</span></button></p>
+  </form>
+</section>
+
+<section class="page" id="p-phone" hidden>
+  <h1 tabindex="-1"><span class="ar">فاحص أرقام الهاتف</span><span class="en">Phone Number Checker</span></h1>
+  <p class="lead"><span class="ar">افحص صيغة الرقم ورمز دولته. الرقم المجهول ليس بالضرورة احتيالًا، وهذه الأداة لا تتصل به ولا ترسل له أبدًا.</span><span class="en">Check a number’s format and country code. An unknown number is not automatically a scam, and this tool never calls or messages it.</span></p>
+  <form id="phoneForm" novalidate class="card">
+    <label for="phoneIn"><span class="ar">رقم الهاتف</span><span class="en">Phone number</span></label>
+    <input id="phoneIn" type="text" dir="ltr" inputmode="tel" maxlength="40" autocomplete="off" placeholder="+44 7700 900123">
+    <p class="err" id="phoneErr" role="alert"></p>
+    <button class="btn" type="submit"><span class="ar">افحص الرقم</span><span class="en">Check number</span></button> <button class="btn ghost" type="button" data-clear="phoneIn,phoneErr"><span class="ar">مسح</span><span class="en">Clear</span></button>
+    <p class="demos"><button type="button" class="chip" data-fill="phoneIn" data-val="+44 7700 900123"><span class="ar">مثال: رقم بريطاني وهمي</span><span class="en">Demo: fictional UK number</span></button> <button type="button" class="chip" data-fill="phoneIn" data-val="+44 1234567890"><span class="ar">مثال: نمط غير معتاد</span><span class="en">Demo: unusual pattern</span></button></p>
+  </form>
+  <p class="note"><span class="ar">لا توجد خدمة سمعة أرقام متصلة، فلا تستطيع هذه الأداة أن تقول إن كان رقم ما قد أُبلغ عنه. هي تفحص الصيغة فقط.</span><span class="en">No phone reputation service is connected, so this tool cannot say whether a number has been reported. It can only check the format.</span></p>
+</section>
+
+<section class="page" id="p-learn" hidden lang="ar" dir="rtl">
+  <h1 tabindex="-1">مركز التعلّم</h1>
+  <div id="learnBox"></div>
+</section>
+
+<section class="page" id="p-quiz" hidden>
+  <h1 tabindex="-1"><span class="ar">اختبار الأمان</span><span class="en">Safety Quiz</span></h1>
+  <p class="lead"><span class="ar">سيناريوهات وهمية فقط. نتيجتك تصف إجاباتك أنت في هذا الاختبار، لا أكثر.</span><span class="en">Fictional scenarios only. Your score describes your own answers in this quiz, nothing more.</span></p>
+  <div id="quizBox" class="card" aria-live="polite"></div>
+</section>
+
+<section class="page" id="p-about" hidden>
+  <h1 tabindex="-1"><span class="ar">عن TrustGuard AI</span><span class="en">About TrustGuard AI</span></h1>
+  <p><span class="ar"><b>الفريق:</b> <span dir="ltr">CyberShield</span> · <b>المجال:</b> الأمن السيبراني وتطوير البرمجيات والذكاء الاصطناعي</span><span class="en"><b>Team:</b> CyberShield · <b>Field:</b> Cybersecurity, Software Development, and Artificial Intelligence</span></p>
+  <div class="grid3">
+    <div class="card"><h3><span class="ar">الرسالة</span><span class="en">Mission</span></h3><p><span class="ar">جعل الأمان على الإنترنت أسهل فهمًا بمساعدة المستخدمين على التعرّف على الروابط والرسائل وأرقام الهاتف المشبوهة، وفهم علامات التحذير المحتملة، واتخاذ قرارات رقمية أكثر وعيًا.</span><span class="en">To make online safety easier to understand by helping users recognize suspicious links, messages and phone numbers, understand potential warning signs, and make more informed digital decisions.</span></p></div>
+    <div class="card"><h3><span class="ar">الرؤية</span><span class="en">Vision</span></h3><p><span class="ar">دعم مجتمع رقمي أكثر وعيًا بالأمان من خلال تعليم سيبراني متاح وتحليل مخاطر قابل للتفسير.</span><span class="en">To support a more security-aware digital community through accessible cybersecurity education and explainable risk analysis.</span></p></div>
+    <div class="card"><h3><span class="ar">القيمة المتوقعة</span><span class="en">Expected value</span></h3><p><span class="ar">وعي أفضل بعلامات التحذير وقرارات أكثر وعيًا. هذه فوائد متوقعة وليست نتائج مقاسة.</span><span class="en">Better awareness of warning signs and more informed decisions. These are expected benefits, not measured results.</span></p></div>
+  </div>
+  <h2><span class="ar">كيف يعمل التحليل حاليًا</span><span class="en">How the analysis works today</span></h2>
+  <p><span class="ar">محرّك واحد يجد الروابط وأرقام الهاتف داخل ما تلصقه، ويطبّق قواعد ومطابقة كلمات على كل عنصر وعلى صياغة الرسالة، ثم يضيف قواعد «المخاطر المجتمعة» (مثل طلب رمز مع رابط). والنتيجة مستوى منخفض أو متوسط أو مرتفع. يعمل في متصفحك. هو <b>لا</b> يستخدم نموذج ذكاء اصطناعي مُدرَّب ولا يرجع إلى أي قاعدة بيانات سمعة.</span><span class="en">One engine finds links and phone numbers inside whatever you paste, runs predefined rules and keyword matching on each element and on the message wording, then adds a few “combined risk” rules (for example, a request for a code together with a link). The result is a Low, Medium or High level. It runs in your browser. It does <b>not</b> use a trained AI model and does not consult any reputation database.</span></p>
+  <h2><span class="ar">علامات التحذير مقابل البلاغات الموثّقة</span><span class="en">Warning signs vs verified reports</span></h2>
+  <p><span class="ar">علامات التحذير أنماط تظهر كثيرًا في الاحتيال، وكثير منها يظهر في رسائل سليمة أيضًا. أما البلاغ الموثّق فيأتي من مصدر خارجي موثوق، ولا يوجد مصدر متصل. لذلك لا يقول هذا النموذج أبدًا إن رقمًا أو رابطًا احتيال مؤكد.</span><span class="en">Warning signs are patterns that often appear in scams, and many also appear in legitimate messages. A verified report would come from a trusted external source. None is connected, so this prototype never states that a number or link is a confirmed scam.</span></p>
+  <h2><span class="ar">جاهز للتكامل مستقبلًا</span><span class="en">Ready for future integration</span></h2>
+  <p><span class="ar">للمحرّك نقاط ربط موثّقة لخدمة سمعة أرقام وخدمة سمعة روابط ومصنّف ذكاء اصطناعي مُقيَّم. وهي فارغة اليوم. وأي شيء تُرجعه سيُعرض منفصلًا ومعنونًا باسم مصدره.</span><span class="en">The engine has documented hooks for a phone-reputation service, a link-reputation service and an evaluated AI classifier. They are empty today. Anything they return would be shown separately and labeled with its source.</span></p>
+  <h2><span class="ar">حدود النموذج</span><span class="en">Limitations</span></h2>
+  <ul>
+    <li><span class="ar">القواعد تنتج إنذارات كاذبة وتفوّت أشياء، ولا تستطيع كشف كل أنواع الاحتيال.</span><span class="en">Rules produce false positives and false negatives, and cannot detect every scam.</span></li>
+    <li><span class="ar">رقم أو رابط بلا علامات تحذير قد يكون خطرًا، وآخر بعلامات تحذير قد يكون سليمًا.</span><span class="en">A number or link with no warning signs may still be dangerous; one with warning signs may be harmless.</span></li>
+    <li><span class="ar">تحليل الكلمات لا يثبت هوية مرسل الرسالة الحقيقي.</span><span class="en">Keyword analysis cannot establish who really sent a message.</span></li>
+    <li><span class="ar">جدول رموز الدول قصير، وتخمين النطاق الرئيسي تقريبي.</span><span class="en">The country-code table is short and the main-domain guess is approximate.</span></li>
+    <li><span class="ar">القيمة من 0 إلى 100 تقدير داخلي وليست احتمالًا.</span><span class="en">The 0–100 value is an internal heuristic, not a probability.</span></li>
+  </ul>
+  <h2><span class="ar">الخصوصية</span><span class="en">Privacy</span></h2>
+  <p><span class="ar">كل التحليل يتم في متصفحك. لا يُرفع شيء ولا يُخزَّن. أرقام الهاتف تظهر مخفية جزئيًا. الروابط لا تُفتح أبدًا والأرقام لا يُتصل بها.</span><span class="en">All analysis happens in your browser. Nothing is uploaded or stored. Phone numbers are shown masked. Links are never opened and numbers are never contacted.</span></p>
+</section>
+
+</main>
+<footer><p><span class="ar"><span dir="ltr">TrustGuard AI · CyberShield</span> · نموذج تعليمي — علامات التحذير ليست بلاغات موثّقة والنتائج ليست ضمانًا للأمان.</span><span class="en">TrustGuard AI · CyberShield · Educational prototype — warning signs are not verified reports and results are not a guarantee of safety.</span></p></footer>
+<script>
+"use strict";
+/* TrustGuard AI — Bilingual (Arabic / English) Universal Scam Detector.
+   Rule-based only (no trained AI model). The engine never opens a link and never calls or messages a number.
+   Output = warning signs, NOT verified scam reports. The Learning Center is always Arabic. */
+
+let LANG = "ar";
+const B = (ar, en) => ({ ar, en });
+const T = o => (o && typeof o === "object" && "ar" in o) ? o[LANG] : o;
+const t = (ar, en) => LANG === "ar" ? ar : en;
+const L = s => "\u2066" + s + "\u2069"; // keeps numbers/links left-to-right inside Arabic text
+
+const CFG = {
+  maxInput: 5000, maxUrl: 2048,
+  mediumAt: 3, highAt: 7,   // points → Low (<3) / Medium (3–6) / High (>=7). Each rule id counts once.
+  pointsToScore: 8,         // internal heuristic score = min(100, points × 8). NOT a probability.
+  brands: ["paypal", "google", "facebook", "instagram", "whatsapp", "apple", "microsoft", "amazon", "netflix", "dhl", "fedex"],
+  arBrands: { "باي بال": "paypal", "جوجل": "google", "فيسبوك": "facebook", "انستجرام": "instagram", "واتساب": "whatsapp", "أمازون": "amazon", "نتفليكس": "netflix", "مايكروسوفت": "microsoft" },
+  shorteners: ["bit.ly", "tinyurl.com", "t.co", "goo.gl", "is.gd", "cutt.ly", "ow.ly", "rebrand.ly"],
+  warnTlds: ["zip", "top", "xyz", "click", "country", "gq", "tk", "work"],
+  pathTerms: ["login", "signin", "verify", "password", "otp", "account", "secure", "update", "confirm", "bank", "wallet"],
+};
+const normDigits = s => s.replace(/[٠-٩]/g, d => d.charCodeAt(0) - 1632).replace(/[۰-۹]/g, d => d.charCodeAt(0) - 1776); // same length, so positions stay valid
+
+/* ---------------- URL rules (test returns a bilingual detail or null) ---------------- */
+const isBrandHost = (h, b) => h === b + ".com" || h.endsWith("." + b + ".com");
+const URL_RULES = [
+  { id: "http", w: 1, name: B("الرابط لا يستخدم HTTPS", "Not using HTTPS"),
+    test: u => u.protocol === "http:" ? B("يبدأ العنوان بـ http:// أي أن الاتصال غير مشفّر.", "The address starts with http://, so the connection is not encrypted.") : null,
+    why: B("الاتصال غير المشفّر يمكن قراءته أو تعديله أثناء النقل. (لكن وجود HTTPS وحده لا يثبت أن الموقع حقيقي.)", "Unencrypted connections can be read or altered in transit. (HTTPS alone never proves a site is legitimate.)") },
+  { id: "ip", w: 3, name: B("اسم الموقع عبارة عن عنوان IP", "Hostname is an IP address"),
+    test: u => /^\d{1,3}(\.\d{1,3}){3}$/.test(u.hostname) || u.hostname.startsWith("[") ? B("يستخدم الرابط " + u.hostname + " بدل اسم نطاق.", "The link uses " + u.hostname + " instead of a domain name.") : null,
+    why: B("المؤسسات الحقيقية عادةً تستخدم اسم نطاق معروفًا.", "Legitimate organizations usually use a recognizable domain name.") },
+  { id: "userinfo", w: 3, name: B("الرابط يحتوي على علامة @", "Contains @ (user-info syntax)"),
+    test: u => u.username || u.password ? B("الكلام الذي قبل @ يُعامل كبيانات دخول، فالوجهة الحقيقية هي «" + u.hostname + "».", "Text before @ is treated as login info, so the real destination is “" + u.hostname + "”.") : null,
+    why: B("الكلام الذي قبل @ قد يجعل الرابط يبدو وكأنه يؤدي إلى موقع آخر.", "Text placed before the @ can make a link look like it points to a different site.") },
+  { id: "punycode", w: 2, name: B("رموز Punycode (xn--) في اسم الموقع", "Punycode (xn--) in hostname"),
+    test: u => u.hostname.split(".").some(l => l.startsWith("xn--")) ? B("جزء من اسم الموقع يبدأ بـ xn-- وقد يخفي حروفًا تشبه حروفًا أخرى.", "A hostname part starts with xn--, which can encode look-alike characters.") : null,
+    why: B("الحروف المتشابهة قد تقلّد اسمًا مألوفًا، لكن بعض النطاقات الدولية السليمة تستخدمه أيضًا.", "Look-alike characters can imitate a familiar name. Some legitimate international domains also use it.") },
+  { id: "short", w: 2, name: B("رابط مختصر", "URL shortener"),
+    test: u => CFG.shorteners.includes(u.hostname) ? B(u.hostname + " خدمة لاختصار الروابط، فالوجهة النهائية مخفية.", u.hostname + " is a link shortener, so the final destination is hidden.") : null,
+    why: B("لا يمكنك معرفة إلى أين يؤدي الرابط دون فتحه.", "You cannot see where the link leads without opening it.") },
+  { id: "brand", w: 3, name: B("اسم علامة تجارية داخل نطاق لا يخصها", "Brand name in an unrelated domain"),
+    test: u => { const b = CFG.brands.find(x => u.hostname.includes(x) && !isBrandHost(u.hostname, x)); return b ? B("اسم الموقع يحتوي على «" + b + "» لكنه ليس عنوان " + b + ".com.", "The hostname contains “" + b + "” but is not a " + b + ".com address.") : null; },
+    why: B("العناوين المشابهة تجعل الرابط يبدو تابعًا لعلامة موثوقة. (يتم فحص قائمة قصيرة من العلامات فقط.)", "Look-alike addresses can make a link appear to belong to a trusted brand. (Only a short configured brand list is checked.)") },
+  { id: "innerTld", w: 2, name: B("نطاق مألوف مستخدم كنطاق فرعي", "Familiar domain used as a subdomain"),
+    test: u => { const l = u.hostname.split("."); return l.length > 2 && l.slice(0, -2).some(x => ["com", "net", "org", "gov", "edu", "co"].includes(x)) ? B("ظهر جزء مثل «com» قبل النهاية الحقيقية لاسم الموقع.", "A part such as “com” appears before the real ending of the hostname.") : null; },
+    why: B("النطاق المسجّل هو الجزء الذي قبل نهاية العنوان مباشرة؛ أما الأجزاء التي قبله فيختارها مالك النطاق بحرية.", "The registered domain is the part just before the public suffix at the end; earlier parts can be chosen freely by whoever owns that domain.") },
+  { id: "subs", w: 1, name: B("نطاقات فرعية كثيرة", "Many subdomain levels"),
+    test: u => u.hostname.split(".").length >= 5 ? B("اسم الموقع يتكون من " + u.hostname.split(".").length + " أجزاء.", "The hostname has " + u.hostname.split(".").length + " parts.") : null,
+    why: B("الأسماء الطويلة تجعل النطاق الحقيقي أصعب في الملاحظة.", "Long hostnames can make the real domain harder to spot.") },
+  { id: "hyphens", w: 1, name: B("شرطات كثيرة غير معتادة", "Unusual hyphens in hostname"),
+    test: u => (u.hostname.match(/-/g) || []).length >= 3 || u.hostname.split(".").some(l => (l.match(/-/g) || []).length >= 2) ? B("اسم الموقع يحتوي على عدة شرطات.", "The hostname contains several hyphens.") : null,
+    why: B("الأسماء المليئة بالشرطات تُستخدم أحيانًا لتقليد علامة تجارية مع كلمة إضافية.", "Hyphen-heavy names are sometimes used to imitate a brand plus a keyword.") },
+  { id: "tld", w: 1, name: B("نهاية العنوان ضمن قائمة الحذر", "Ending on the configured caution list"),
+    test: u => { const e = u.hostname.split(".").pop(); return CFG.warnTlds.includes(e) ? B("النهاية «." + e + "» ضمن قائمة الحذر في هذا النموذج.", "The ending “." + e + "” is on this prototype’s caution list.") : null; },
+    why: B("بعض النهايات يكثر استخدامها في الاحتيال، لكن مواقع كثيرة سليمة تستخدمها أيضًا.", "Some endings are used more often in abuse, but many legitimate sites use them too.") },
+  { id: "port", w: 1, name: B("منفذ (Port) غير معتاد", "Unusual port"),
+    test: u => u.port && !["80", "443"].includes(u.port) ? B("العنوان يحدد المنفذ " + u.port + ".", "The address specifies port " + u.port + ".") : null,
+    why: B("المواقع العادية نادرًا ما تحتاج إلى تحديد منفذ.", "Normal websites rarely need an explicit port.") },
+  { id: "long", w: 1, name: B("رابط طويل جدًا", "Very long URL"),
+    test: u => u.href.length > 100 ? B("طول الرابط " + u.href.length + " حرفًا.", "The URL is " + u.href.length + " characters long.") : null,
+    why: B("العناوين الطويلة قد تخفي الجزء المهم.", "Long addresses can bury the important part.") },
+  { id: "terms", w: 1, name: B("كلمات حساسة في المسار أو الاستعلام", "Sensitive-sounding words in path or query"),
+    test: u => { const s = (u.pathname + u.search).toLowerCase(); const f = CFG.pathTerms.filter(x => s.includes(x)); return f.length ? B("وُجدت الكلمات: " + f.join("، ") + ".", "Found: " + f.join(", ") + ".") : null; },
+    why: B("صفحات طلب الدخول أو الرموز تستخدم هذه الكلمات، لكن صفحات الدخول الحقيقية تستخدمها أيضًا.", "Pages asking for logins or codes often use such words, but so do genuine sign-in pages.") },
+];
+
+/* ---------------- Message rules: English regex + Arabic keywords; each match gives a highlightable phrase ---------------- */
+const MSG_RULES = [
+  { id: "urgency", w: 1, name: B("ضغط للتصرف بسرعة", "Urgent pressure to act"), re: /\b(urgent(ly)?|immediately|right now|asap|act now|last chance|final (warning|notice)|within \d+ (hours?|minutes?)|expires? (today|soon)|today only)\b/gi,
+    ar: ["عاجل", "فورا", "فوراً", "على الفور", "في الحال", "آخر فرصة", "تحذير أخير", "ينتهي اليوم", "خلال ساعة"], why: B("الضغط يقلّل الوقت الذي تفكر فيه وتتحقق.", "Pressure reduces the time you take to think and verify.") },
+  { id: "threat", w: 2, name: B("تهديد بمشكلة في الحساب أو عقوبة", "Threat of account problems or penalties"), re: /\b(suspended|blocked|locked|deactivated|terminated|will be (closed|deleted|cancelled)|legal action|arrest)\b/gi,
+    ar: ["تم إيقاف", "تم تعليق", "سيتم تعليق", "موقوف", "محظور", "تم حظر", "سيتم إغلاق", "سيتم حذف", "إجراء قانوني"], why: B("الخوف من فقدان الحساب أو العقوبة يُستخدم للتعجيل بقرارك.", "Fear of losing access or facing penalties is used to rush decisions.") },
+  { id: "creds", w: 3, name: B("يطلب كلمات مرور أو رموز OTP أو بيانات هوية/بطاقة", "Asks for passwords, OTP codes or ID/card details"), re: /\b(password|passcode|otp|one[- ]time (code|password)|verification code|security code|\bpin\b|cvv|card number|national id|ssn|login details)\b/gi,
+    ar: ["كلمة المرور", "كلمة السر", "الباسورد", "رمز التحقق", "كود التحقق", "رمز التأكيد", "الرقم السري", "رقم البطاقة", "بيانات الدخول", "الرقم القومي"], why: B("الجهات الحقيقية لا تطلب منك إرسال هذه البيانات في رسالة أو قراءتها في مكالمة.", "Legitimate organizations do not ask you to send these in a message or read them out on a call.") },
+  { id: "money", w: 2, name: B("يطلب مالًا أو رسومًا أو دفعات", "Requests money, fees or payments"), re: /\b(pay|payment|transfer|send money|fee|fine|deposit|bitcoin|crypto|gift card|western union|wire)\b/gi,
+    ar: ["ادفع", "سداد", "حوّل", "حول مبلغ", "رسوم", "غرامة", "إيداع", "بطاقة هدايا", "بيتكوين"], why: B("أي طلب دفع غير متوقع يجب التأكد منه عبر قناة رسمية قبل إرسال أي شيء.", "Unexpected payment requests should be checked through an official channel before you send anything.") },
+  { id: "prize", w: 2, name: B("ادعاء بجائزة أو مكافأة", "Prize or reward claim"), re: /\b(you (have )?won|prize|gift card|reward|lottery|congratulations|free (iphone|gift))\b/gi,
+    ar: ["مبروك", "فزت", "ربحت", "جائزة", "هدية مجانية", "سحب على", "يانصيب"], why: B("لا يمكنك الفوز بمسابقة لم تشترك فيها؛ المكافآت غير المتوقعة طُعم شائع.", "You cannot win a contest you did not enter; unexpected rewards are a common lure.") },
+  { id: "bank", w: 2, name: B("نمط تنبيه بنكي مزيف", "Fake bank-style alert pattern"), re: /\b((account|card)[^.!?\n]{0,40}(blocked|suspended|locked|frozen|limited|compromised)|unusual (activity|login|transaction)|unauthori[sz]ed (transaction|access|login))\b/gi,
+    ar: ["نشاط غير معتاد", "حسابك موقوف", "بطاقتك موقوفة", "تم إيقاف بطاقتك", "تم تعليق حسابك", "عملية غير مصرح بها", "محاولة دخول"], why: B("المحتالون يقلّدون تنبيهات البنوك لتتصرف دون الرجوع إلى بنكك. البنوك الحقيقية ترسل تنبيهات أيضًا، لذا تحقق عبر التطبيق الرسمي أو الرقم المكتوب على بطاقتك.", "Scammers imitate bank alerts to make you act without contacting your bank. Real banks also send alerts, so verify through the official app or card number.") },
+  { id: "delivery", w: 2, name: B("نمط إشعار توصيل مزيف", "Fake delivery-notice pattern"), re: /\b((parcel|package|shipment|delivery|courier|order)[^.!?\n]{0,50}(failed|unable|pending|on hold|held|reschedul\w*|customs|address|fee|confirm)|(failed|missed) delivery|redeliver\w*|customs (fee|charge)s?)\b/gi,
+    ar: ["شحنتك", "طردك", "فشل التوصيل", "رسوم الجمارك", "رسوم التوصيل", "تأكيد العنوان", "الشحنة معلقة"], why: B("«رسوم التوصيل» الصغيرة وتأكيد العنوان وسيلة شائعة لسرقة بيانات البطاقات. شركات الشحن الحقيقية ترسل إشعارات أيضًا، فتحقق من تطبيقها الرسمي برقم التتبع الذي تملكه.", "Small “delivery fees” and address confirmations are a common way to steal card details. Real couriers also send notices, so check with the courier’s official app using your own tracking number.") },
+  { id: "verify", w: 1, name: B("يطلب منك التحقق أو تأكيد البيانات", "Asks you to verify or confirm details"), re: /\b(verif(y|ication)|confirm|validate|update your (account|details|information))\b/gi,
+    ar: ["تحقق", "التحقق", "تأكيد", "توثيق", "تفعيل حسابك"], why: B("رسائل الاحتيال كثيرًا ما تطلب «التحقق» من بياناتك، لكن الخدمات الحقيقية تستخدم هذه الصياغة أيضًا.", "Scam messages often ask you to “verify” details, but genuine services use this wording too.") },
+  { id: "clicklink", w: 1, name: B("يطلب منك الضغط على رابط", "Tells you to click or follow a link"), re: /\b(click|tap|follow|open|visit)\b[^.!?\n]{0,30}\b(link|here|below|url)\b/gi,
+    ar: ["اضغط على الرابط", "اضغط هنا", "افتح الرابط", "الرابط التالي", "الرابط أدناه"], why: B("الروابط في الرسائل غير المتوقعة هي الطريق الرئيسي لصفحات التصيد.", "Links in unexpected messages are the main way phishing pages reach people.") },
+  { id: "impersonation", w: 1, name: B("يدّعي أنه جهة رسمية", "Claims to be an official source"), re: /\b(customer (service|support|care)|support team|security (team|department)|official|ministry|tax (authority|office)|revenue|police|government|it department|helpdesk)\b/gi,
+    ar: ["خدمة العملاء", "الدعم الفني", "فريق الأمان", "وزارة", "مصلحة الضرائب", "الشرطة", "رسمي", "قسم الأمن"], why: B("انتحال صفة جهة رسمية يدفع الناس للامتثال. الادعاء داخل الرسالة ليس دليلًا على الهوية.", "Impersonating an authority makes people comply. A claim of authority inside a message is not proof of identity.") },
+  { id: "secrecy", w: 2, name: B("يطلب منك إبقاء الأمر سرًا", "Asks you to keep it secret"), re: /\b(don'?t (tell|share)|keep (this|it) (secret|confidential)|do not (tell|inform))\b/gi,
+    ar: ["لا تخبر أحدا", "لا تخبر أحداً", "سري للغاية", "لا تشارك مع أحد"], why: B("السرية تمنعك من سؤال شخص قد يكتشف الاحتيال.", "Secrecy keeps you from asking someone who could spot the scam.") },
+  { id: "offer", w: 2, name: B("عرض مغرٍ أكثر من اللازم", "Too-good-to-be-true offer"), re: /\b(guaranteed (returns?|profit)|double your money|work from home|earn \$?\d+|investment opportunity|risk[- ]free|get rich)\b/gi,
+    ar: ["أرباح مضمونة", "ضاعف أموالك", "اربح من البيت", "فرصة استثمار", "بدون مخاطرة"], why: B("الأرباح المضمونة أو الخيالية سمة مميزة لاحتيال الاستثمار والوظائف.", "Guaranteed or unusually high returns are a hallmark of investment and job scams.") },
+];
+const CALLBACK_RE = /\b(call|contact|whatsapp|text|message|reach)\b/i, CALLBACK_AR = ["اتصل", "تواصل", "واتساب", "راسلنا", "كلمنا"];
+
+/* ---------------- Phones (country names: [English, Arabic]) ---------------- */
+const CC = { "1": ["United States / Canada / other +1 territories", "الولايات المتحدة / كندا / أقاليم أخرى بالرمز +1"], "7": ["Russia / Kazakhstan", "روسيا / كازاخستان"], "20": ["Egypt", "مصر"], "27": ["South Africa", "جنوب أفريقيا"], "30": ["Greece", "اليونان"], "31": ["Netherlands", "هولندا"], "32": ["Belgium", "بلجيكا"], "33": ["France", "فرنسا"], "34": ["Spain", "إسبانيا"], "36": ["Hungary", "المجر"], "39": ["Italy", "إيطاليا"], "40": ["Romania", "رومانيا"], "41": ["Switzerland", "سويسرا"], "43": ["Austria", "النمسا"], "44": ["United Kingdom", "المملكة المتحدة"], "45": ["Denmark", "الدنمارك"], "46": ["Sweden", "السويد"], "47": ["Norway", "النرويج"], "48": ["Poland", "بولندا"], "49": ["Germany", "ألمانيا"], "51": ["Peru", "بيرو"], "52": ["Mexico", "المكسيك"], "54": ["Argentina", "الأرجنتين"], "55": ["Brazil", "البرازيل"], "56": ["Chile", "تشيلي"], "57": ["Colombia", "كولومبيا"], "58": ["Venezuela", "فنزويلا"], "60": ["Malaysia", "ماليزيا"], "61": ["Australia", "أستراليا"], "62": ["Indonesia", "إندونيسيا"], "63": ["Philippines", "الفلبين"], "64": ["New Zealand", "نيوزيلندا"], "65": ["Singapore", "سنغافورة"], "66": ["Thailand", "تايلاند"], "81": ["Japan", "اليابان"], "82": ["South Korea", "كوريا الجنوبية"], "84": ["Vietnam", "فيتنام"], "86": ["China", "الصين"], "90": ["Türkiye", "تركيا"], "91": ["India", "الهند"], "92": ["Pakistan", "باكستان"], "93": ["Afghanistan", "أفغانستان"], "94": ["Sri Lanka", "سريلانكا"], "98": ["Iran", "إيران"],
+  "212": ["Morocco", "المغرب"], "213": ["Algeria", "الجزائر"], "216": ["Tunisia", "تونس"], "218": ["Libya", "ليبيا"], "234": ["Nigeria", "نيجيريا"], "249": ["Sudan", "السودان"], "254": ["Kenya", "كينيا"], "351": ["Portugal", "البرتغال"], "353": ["Ireland", "أيرلندا"], "358": ["Finland", "فنلندا"], "380": ["Ukraine", "أوكرانيا"], "420": ["Czechia", "التشيك"], "961": ["Lebanon", "لبنان"], "962": ["Jordan", "الأردن"], "963": ["Syria", "سوريا"], "964": ["Iraq", "العراق"], "965": ["Kuwait", "الكويت"], "966": ["Saudi Arabia", "السعودية"], "967": ["Yemen", "اليمن"], "968": ["Oman", "عُمان"], "970": ["Palestine", "فلسطين"], "971": ["United Arab Emirates", "الإمارات"], "972": ["Israel", "إسرائيل"], "973": ["Bahrain", "البحرين"], "974": ["Qatar", "قطر"] };
+const NAT_LEN = { "1": [10], "20": [9, 10], "44": [10], "966": [9], "971": [8, 9] }; // expected national-number lengths (only where well known)
+function matchCC(d) { for (const n of [1, 2, 3]) if (CC[d.slice(0, n)]) return d.slice(0, n); return null; }
+function parsePhone(raw) {
+  const s = raw.trim(); let d = s.replace(/\D/g, ""), intl = s.startsWith("+");
+  if (!intl && d.startsWith("00")) { intl = true; d = d.slice(2); }
+  const r = { raw: s, digits: d, intl, cc: null, country: null, national: d, hint: null, problems: [] };
+  const P = (id, name, detail, why) => r.problems.push({ id, name, w: 1, detail, why });
+  if (d.length < 7 || d.length > 15) P("ph-len", B("طول غير معتاد للرقم", "Unusual number length"),
+    B("عدد أرقام هذا الرقم " + d.length + "؛ والأرقام الدولية بين 7 و15 رقمًا.", "The number has " + d.length + " digits; international numbers have 7 to 15."),
+    B("الأرقام خارج الطول المعتاد لا يمكن الاتصال بها بشكل طبيعي، وقد يدل ذلك على خطأ أو رقم مزيّف أو انتحال.", "Numbers outside the normal length cannot be dialed normally, which can indicate a typo, a fake, or a spoofed display."));
+  if (intl) {
+    if (d.startsWith("0")) P("ph-cc", B("رمز دولة غير صالح", "Invalid country code"), B("رموز الدول لا تبدأ بالصفر أبدًا.", "Country codes never start with 0."), B("الرقم الذي لا يمكن أن يكون صالحًا دوليًا يستحق الحذر.", "A number that cannot be valid internationally deserves caution."));
+    else { const cc = matchCC(d);
+      if (!cc) P("ph-cc", B("رمز الدولة غير معروف", "Country code not recognized"), B("بداية الرقم لا تطابق رمز دولة في جدول هذا النموذج.", "The beginning of the number does not match a country code in this prototype’s table."), B("الجدول قصير وغير كامل، فقد يكون هذا قصورًا في النموذج. تحقق من الرقم بطريقة مستقلة.", "The table is short and incomplete, so this may be a limitation of the prototype. Check the number independently."));
+      else { r.cc = cc; r.country = B(CC[cc][1], CC[cc][0]); r.national = d.slice(cc.length);
+        if (NAT_LEN[cc] && !NAT_LEN[cc].includes(r.national.length)) P("ph-len2", B("طول غير معتاد لأرقام " + r.country.ar, "Unusual length for " + r.country.en),
+          B("بعد +" + cc + " يوجد " + r.national.length + " أرقام، والمتوقع " + NAT_LEN[cc].join(" أو ") + ".", "After +" + cc + " the number has " + r.national.length + " digits; " + NAT_LEN[cc].join(" or ") + " is expected."),
+          B("الطول الخاطئ قد يدل على خطأ كتابة أو رقم مزيّف.", "A wrong length can mean a typo or a fake number."));
+        if (r.national.startsWith("0") && !["39"].includes(cc)) P("ph-zero", B("صفر زائد بعد رمز الدولة", "Extra 0 after the country code"),
+          B("يوجد صفر مباشرة بعد +" + cc + "، وهذا غير معتاد في معظم الدول.", "The number has a 0 right after +" + cc + ", which is unusual for most countries."),
+          B("غالبًا خطأ في الكتابة، وأحيانًا علامة على رقم مختلَق.", "Usually a formatting mistake, sometimes a sign of a made-up number.")); } }
+  } else if (/^01[0125]\d{8}$/.test(d)) r.hint = B("يطابق شكل رقم محمول مصري (+20). هذا تطابق في الشكل فقط وليس تأكيدًا.", "Matches the format of an Egyptian mobile number (+20). This is a format match only; it is not confirmed.");
+  const n = r.national;
+  if (n.length >= 6 && (/^(\d)\1+$/.test(n) || "012345678901234567890".includes(n) || "987654321098765432109".includes(n) || /^(\d{2,3})\1{2,}$/.test(n)))
+    P("ph-pattern", B("نمط أرقام غير معتاد", "Unusual digit pattern"), B("الأرقام تتكرر أو تتسلسل.", "The digits repeat or run in sequence."), B("أرقام المشتركين الحقيقية نادرًا ما تبدو هكذا، وقد يدل ذلك على رقم مختلَق.", "Real subscriber numbers rarely look like this. It can indicate a made-up number."));
+  r.valid = d.length >= 7 && d.length <= 15 && !(intl && d.startsWith("0")); // an unrecognized country code is only a table limitation, so it does not make a number invalid
+  r.e164 = r.cc && r.valid ? "+" + d : null;
+  r.masked = (r.cc ? "+" + r.cc + " " : "") + "•".repeat(Math.max(n.length - 2, 0)) + n.slice(-2);
+  return r;
+}
+
+/* ---------------- Extraction ---------------- */
+const URL_RE = /\b(?:https?:\/\/|www\.)[^\s<>"'“”]+|\b(?:[a-z0-9-]+\.)+(?:com|net|org|info|biz|io|co|me|ly|gl|xyz|top|click|zip|work|tk|gq|country|app|online|site|shop|live|link|eg|uk|us|sa|ae|in|ru|cn|invalid|test)\b(?:\/[^\s<>"'“”]*)?/gi;
+const EMAIL_RE = /[\w.+-]+@[\w-]+(?:\.[\w-]+)+/g;
+const PHONE_RE = /\+?\d[\d\s().-]{5,18}\d/g;
+function extract(text) {
+  const emails = [...text.matchAll(EMAIL_RE)].map(m => [m.index, m.index + m[0].length]);
+  const urls = [];
+  for (const m of text.matchAll(URL_RE)) {
+    if (emails.some(([s, e]) => m.index >= s && m.index < e)) continue;
+    const s = m[0].replace(/[.,;:!?)\]}»”"']+$/, "");
+    if (s) urls.push({ s: m.index, e: m.index + s.length, t: s });
+  }
+  const blank = text.split(""); urls.forEach(u => { for (let i = u.s; i < u.e; i++) blank[i] = " "; });
+  const phones = [];
+  for (const m of blank.join("").matchAll(PHONE_RE)) {
+    const s = m[0].trim(), digits = s.replace(/\D/g, "");
+    if (digits.length < 7 || digits.length > 15) continue;
+    if (/^\d{4}[-/.]\d{1,2}[-/.]\d{1,2}$/.test(s) || /^\d{1,2}[-/.]\d{1,2}[-/.]\d{2,4}$/.test(s)) continue; // dates
+    phones.push({ s: m.index, e: m.index + m[0].length, t: s });
+  }
+  return { urls, phones, blank: (() => { const b = text.split(""); [...urls, ...phones].forEach(x => { for (let i = x.s; i < x.e; i++) b[i] = " "; }); return b.join(""); })() };
+}
+
+function validateUrl(raw) {
+  raw = (raw || "").trim();
+  if (!raw) return { error: B("الرابط فارغ.", "Empty link.") };
+  if (raw.length > CFG.maxUrl) return { error: B("الرابط طويل جدًا (الحد الأقصى " + CFG.maxUrl + " حرف).", "Link is too long (limit " + CFG.maxUrl + " characters).") };
+  if (/\s/.test(raw)) return { error: B("الرابط لا يمكن أن يحتوي على مسافات.", "A URL cannot contain spaces.") };
+  const assumed = !/^[a-z][a-z0-9+.-]*:\/\//i.test(raw); let u;
+  try { u = new URL(assumed ? "https://" + raw : raw); } catch (e) { return { error: B("هذا لا يبدو رابطًا صحيحًا.", "This does not look like a valid URL.") }; }
+  if (!["http:", "https:"].includes(u.protocol)) return { error: B("يمكن تحليل روابط http:// و https:// فقط.", "Only http:// and https:// links can be analyzed.") };
+  if (!u.hostname.includes(".") && !u.hostname.startsWith("[")) return { error: B("لا يوجد نطاق في هذا الرابط.", "No domain found in this link.") };
+  return { u, assumed };
+}
+const TWO_PART = ["co.uk", "org.uk", "com.au", "co.in", "com.eg", "gov.eg", "edu.eg", "co.jp"];
+function approxDomain(host) { const l = host.split("."); if (/^\d+(\.\d+){3}$/.test(host) || host.startsWith("[")) return host; return l.slice(-(TWO_PART.includes(l.slice(-2).join(".")) ? 3 : 2)).join("."); }
+
+function findRanges(rule, text) {
+  const low = text.toLowerCase(), out = [];
+  if (rule.re) for (const m of text.matchAll(rule.re)) out.push({ s: m.index, e: m.index + m[0].length, t: m[0] });
+  (rule.ar || []).forEach(w => { let i = low.indexOf(w); while (i >= 0) { out.push({ s: i, e: i + w.length, t: w }); i = low.indexOf(w, i + w.length); } });
+  return out;
+}
+
+/* ---------------- Main analysis (language-neutral result; texts are {ar,en} pairs) ---------------- */
+function analyze(input, mode = "universal") {
+  input = String(input || "");
+  if (!input.trim()) return { error: B("من فضلك الصق شيئًا لتحليله.", "Please paste something to analyze.") };
+  if (input.length > CFG.maxInput) return { error: B("النص طويل جدًا (الحد الأقصى " + CFG.maxInput + " حرف).", "That is too long (limit " + CFG.maxInput + " characters).") };
+  const text = normDigits(input);
+  const ex = extract(text);
+  const words = (ex.blank.match(/[\p{L}\p{N}]+/gu) || []).length;
+  const isMsg = words >= 3 || (!ex.urls.length && !ex.phones.length);
+  if (mode === "link" && !ex.urls.length) return { error: B("لم يتم العثور على رابط. الصق عنوان موقع مثل https://example.com/page", "No link found. Paste a web address such as https://example.com/page") };
+  if (mode === "phone" && !ex.phones.length) return { error: B("لم يتم العثور على رقم هاتف. أدخل رقمًا مثل +44 7700 900123 (من 7 إلى 15 رقمًا).", "No phone number found. Enter a number such as +44 7700 900123 (7 to 15 digits).") };
+  if (mode === "message" && !isMsg) return { error: B("من فضلك الصق نص الرسالة (بضع كلمات أو أكثر).", "Please paste the message text (a few words or more).") };
+
+  const seen = new Set();
+  const urls = ex.urls.filter(u => !seen.has(u.t.toLowerCase()) && seen.add(u.t.toLowerCase())).map(x => {
+    const v = validateUrl(x.t);
+    return v.error ? { ...x, error: v.error, hits: [] } : { ...x, u: v.u, assumed: v.assumed, domain: approxDomain(v.u.hostname), hits: URL_RULES.map(r => { const d = r.test(v.u); return d ? { id: r.id, name: r.name, w: r.w, why: r.why, detail: d } : null; }).filter(Boolean) };
+  });
+  const seenP = new Set();
+  const phones = ex.phones.filter(p => { const k = p.t.replace(/\D/g, ""); return !seenP.has(k) && seenP.add(k); }).map(x => ({ ...x, ...parsePhone(x.t) }));
+  const msgHits = [];
+  MSG_RULES.forEach(r => { const rg = findRanges(r, ex.blank); if (rg.length) msgHits.push({ id: r.id, name: r.name, w: r.w, why: r.why, ranges: rg, phrases: [...new Set(rg.map(x => x.t.trim().toLowerCase()))].slice(0, 5), kind: "message" }); });
+  const lowB = ex.blank.toLowerCase();
+  if (phones.length && (CALLBACK_RE.test(ex.blank) || CALLBACK_AR.some(w => lowB.includes(w))))
+    msgHits.push({ id: "callback", name: B("يدفعك للاتصال برقم", "Pushes you to contact a number"), w: 1, ranges: [], phrases: [], kind: "message",
+      why: B("المحتالون يطلبون منك الاتصال أو المراسلة على رقم يتحكمون به. تواصل مع الجهة عبر رقم تبحث عنه بنفسك.", "Scammers often ask you to call or message a number they control. Contact the organization through a number you find yourself.") });
+  const brand = CFG.brands.find(b => lowB.includes(b)) || Object.keys(CFG.arBrands).filter(k => ex.blank.includes(k)).map(k => CFG.arBrands[k])[0];
+  const valid = urls.filter(u => u.u);
+  if (brand && valid.length && valid.some(u => !isBrandHost(u.u.hostname, brand)))
+    msgHits.push({ id: "mismatch", name: B("الجهة المذكورة لا تطابق الرابط", "Named organization does not match the link"), w: 3, ranges: [], phrases: [brand], kind: "message",
+      why: B("الرابط الذي لا يخص الجهة المذكورة في الرسالة يستحق حذرًا إضافيًا.", "A link that does not belong to the organization named in the message deserves extra care.") });
+
+  const uniq = new Map();
+  msgHits.forEach(h => uniq.set(h.id, h));
+  urls.forEach(u => u.hits.forEach(h => { if (!uniq.has(h.id)) uniq.set(h.id, { ...h, kind: "link", where: [] }); uniq.get(h.id).where = (uniq.get(h.id).where || []).concat(u.t); }));
+  phones.forEach(p => p.problems.forEach(h => { const id = h.id === "ph-len2" ? "ph-len" : h.id; if (!uniq.has(id)) uniq.set(id, { ...h, id, kind: "phone", where: [] }); uniq.get(id).where.push(p.masked); }));
+  const has = id => uniq.has(id), anyLinkSign = urls.some(u => u.hits.length);
+  const combos = [];
+  if (has("creds") && urls.length) combos.push({ id: "c1", w: 2, name: B("يطلب بيانات سرية ويعطيك رابطًا", "Asks for secrets and gives you a link"), why: B("طلب كلمة مرور أو رمز أو هوية مع رابط هو التركيبة الكلاسيكية للتصيد.", "A request for a password, code or ID together with a link is the classic phishing combination.") });
+  if ((has("urgency") || has("threat")) && (has("creds") || has("money"))) combos.push({ id: "c2", w: 2, name: B("ضغط مصحوب بطلب بيانات سرية أو مال", "Pressure combined with a request for secrets or money"), why: B("الاستعجال مع طلب رموز أو دفع مصمّم لمنعك من التحقق أولًا.", "Urgency plus a request for codes or payment is designed to stop you from checking first.") });
+  if ((has("impersonation") || has("bank") || has("delivery")) && (anyLinkSign || phones.length)) combos.push({ id: "c3", w: 1, name: B("رسالة تبدو رسمية تحيلك إلى رابط أو رقم خارجي", "Official-sounding message that sends you to an outside link or number"), why: B("الجهات الحقيقية يمكن الوصول إليها عبر موقعها أو تطبيقها الرسمي أو الرقم المطبوع على بطاقتك أو فاتورتك.", "Genuine organizations are reachable through their official website, app, or the number on your card or bill.") });
+  combos.forEach(c => uniq.set(c.id, { ...c, kind: "combined" }));
+
+  const all = [...uniq.values()];
+  const points = all.reduce((s, h) => s + h.w, 0);
+  const level = points >= CFG.highAt ? "high" : points >= CFG.mediumAt ? "mid" : "low";
+  const cntAr = (n, one, two, few, many) => n === 1 ? one : n === 2 ? two : n <= 10 ? n + " " + few : n + " " + many;
+  const pl = (n, w) => n + " " + w + (n === 1 ? "" : "s");
+  const partsAr = [urls.length && cntAr(urls.length, "رابط واحد", "رابطان", "روابط", "رابطًا"), phones.length && cntAr(phones.length, "رقم هاتف واحد", "رقما هاتف", "أرقام هاتف", "رقم هاتف")].filter(Boolean);
+  const partsEn = [urls.length && pl(urls.length, "link"), phones.length && pl(phones.length, "phone number")].filter(Boolean);
+  const label = isMsg ? B("رسالة" + (partsAr.length ? " تحتوي على " + partsAr.join(" و") : ""), "Message" + (partsEn.length ? " with " + partsEn.join(" and ") : ""))
+    : urls.length && phones.length ? B("رابط ورقم هاتف", "Link and phone number") : urls.length ? B("رابط", "Link") : B("رقم هاتف", "Phone number");
+  return { text, label, isMsg, urls, phones, msgHits, combos, all, points, level, score: Math.min(100, points * CFG.pointsToScore) };
+}
+
+/* ---------------- Integration hooks (none connected in this prototype) ----------------
+   phoneReputation(e164) / urlReputation(url) / classifier(text) → Promise<{ source, summary?, label? }>
+   Anything returned is shown separately from rule-based warning signs and labeled with its source. */
+const INTEGRATIONS = { phoneReputation: null, urlReputation: null, classifier: null };
+async function runIntegrations(result, ints = INTEGRATIONS) {
+  const out = [];
+  const call = async (kind, fn, arg, subject) => { try { const d = await fn(arg); if (d && d.source) out.push({ kind, subject, ...d }); } catch (e) { out.push({ kind, subject, source: "(error)", summary: B("فشل الاستعلام؛ ولا يُدّعى أي شيء.", "The lookup failed; nothing is claimed.") }); } };
+  if (ints.phoneReputation) for (const p of result.phones) if (p.e164) await call("phone", ints.phoneReputation, p.e164, p.masked);
+  if (ints.urlReputation) for (const u of result.urls) if (u.u) await call("link", ints.urlReputation, u.u.href, u.t);
+  if (ints.classifier) await call("classifier", ints.classifier, result.text, "whole content");
+  return out;
+}
+
+/* ================= UI content (each pair is {ar, en}) ================= */
+const DEMOS = {
+  ar: {
+    bank: "تنبيه: تم إيقاف حسابك البنكي بسبب نشاط غير معتاد. تحقق الآن: http://secure-login.bank-check.xyz/verify وأرسل رمز التحقق (OTP) الذي سيصلك. اتصل على +1 202 555 0147 فورا.",
+    delivery: "تعذّر توصيل شحنتك. ادفع رسوم جمارك بسيطة لإعادة الجدولة: https://bit.ly/parcel-fee-demo",
+    prize: "مبروك! فزت بجائزة. أرسل الرقم القومي وادفع رسوم 20 دولارا. تواصل على +44 7700 900123 الآن. لا تخبر أحدا.",
+    other: "ALERT: Your bank account has been suspended due to unusual activity. Verify now: http://secure-login.bank-check.xyz/verify and reply with the OTP code we send you. Call +1 202 555 0147 immediately.",
+    phone: "+44 7700 900123",
+    normal: "مرحبا، تم تأجيل الاجتماع إلى الساعة الثالثة. أراك هناك.",
+  },
+  en: {
+    bank: "ALERT: Your bank account has been suspended due to unusual activity. Verify now: http://secure-login.bank-check.xyz/verify and reply with the OTP code we send you. Call +1 202 555 0147 immediately.",
+    delivery: "Your parcel could not be delivered. Pay a small customs fee to reschedule: https://bit.ly/parcel-fee-demo",
+    prize: "Congratulations! You won a prize. Send your national ID and a $20 fee. Contact +44 7700 900123 now. Keep this secret.",
+    other: "حسابك موقوف. أرسل رمز التحقق فورا عبر http://bank-check.xyz/login",
+    phone: "+44 7700 900123",
+    normal: "Hi, the meeting moved to 3 PM. See you there.",
+  },
+};
+const VERDICT = {
+  ar: { high: "تعامل معه على أنه خطر. لا تضغط ولا تتصل ولا ترد ولا تشارك أي شيء.", mid: "انتبه. تحقق عبر قناة رسمية قبل أن تفعل أي شيء.", low: "لم تجد القواعد المحلية علامات تحذير واضحة. هذا لا يثبت أنه آمن." },
+  en: { high: "Treat this as dangerous. Do not click, call, reply, or share anything.", mid: "Be careful. Verify through an official channel before you do anything.", low: "No clear warning signs were found by the local rules. This is not proof that it is safe." },
+};
+const BASE_STEPS = {
+  ar: {
+    high: ["لا تفتح الرابط ولا تتصل بالرقم ولا ترد.", "لا تشارك كلمات المرور أو رموز التحقق أو بيانات الهوية أو البطاقة أبدًا.", "إذا ادّعى أنه من جهة معينة، تواصل مع هذه الجهة بنفسك عبر موقعها أو تطبيقها الرسمي أو الرقم المكتوب على بطاقتك أو فاتورتك.", "احذفه واحظر المرسل واستخدم خيار الإبلاغ في التطبيق أو خدمة البريد إن وُجد.", "إذا وصلتك من حساب صديق، نبّهه بوسيلة أخرى: قد يكون حسابه مخترقًا."],
+    mid: ["توقف. تحقق من الطلب عبر وسيلة أخرى قبل أن تتصرف.", "لا تسجّل دخولًا ولا تدفع ولا تنزّل أو تثبّت أي شيء منه.", "اسأل المرسل عبر قناة مختلفة إن كان قد أرسله فعلًا.", "إذا بقيت غير متأكد، اسأل شخصًا بالغًا موثوقًا أو مختصًا."],
+    low: ["ابقَ حذرًا إذا كان غير متوقع، حتى لو لم تظهر علامات تحذير.", "في أي أمر يخص المال أو الحسابات، اكتب العنوان الرسمي بنفسك أو استخدم التطبيق الرسمي.", "لا تشارك كلمات المرور أو رموز التحقق بسبب أي رسالة."],
+  },
+  en: {
+    high: ["Do not open the link, call the number, or reply.", "Never share passwords, one-time codes, ID or card details.", "If it claims to be from an organization, contact that organization yourself using its official website, app, or the number on your card or bill.", "Delete it, block the sender, and use the report option of the app or email service if there is one.", "If it came from a friend’s account, warn them another way: it may be compromised."],
+    mid: ["Pause. Verify the request through another channel before acting.", "Do not sign in, pay, download or install anything from it.", "Ask the sender, through a different channel, whether they really sent it.", "If you are still unsure, ask a trusted adult or a qualified person."],
+    low: ["Stay cautious if it was unexpected, even with no warning signs.", "For money or accounts, type the official address yourself or use the official app.", "Never share passwords or one-time codes because of a message."],
+  },
+};
+const SPECIFIC = {
+  ar: {
+    creds: "لا توجد خدمة حقيقية تحتاج أن ترسل أو تقرأ رمز تحقق أو كلمة مرور أو رقمًا سريًا.",
+    money: "لا ترسل مالًا أو «رسومًا» بسبب رسالة. تأكد عبر رقم رسمي تبحث عنه بنفسك.",
+    bank: "اتصل ببنكك عبر الرقم المكتوب على بطاقتك أو تطبيقه الرسمي، وليس الرقم الموجود في الرسالة.",
+    delivery: "افحص تطبيق شركة الشحن الرسمي أو موقعها برقم تتبع تملكه بالفعل.",
+    prize: "لا يمكنك الفوز بمسابقة لم تشترك فيها. تجاهل الرسالة.",
+    callback: "لا تعاود الاتصال بالرقم الموجود في الرسالة. ابحث عن الرقم الرسمي للجهة بنفسك.",
+    short: "رابط مختصر: اطلب من المرسل العنوان الكامل، أو تجنّبه.",
+    ip: "الروابط المكوّنة من أرقام نادرًا ما تستخدمها جهات حقيقية. تجنّبها.",
+    userinfo: "كل ما قبل علامة @ يُتجاهل؛ الوجهة الحقيقية هي الجزء الذي بعدها.",
+    brand: "اسم العلامة داخل الرابط لا يجعله رابطها. افتح موقع العلامة الرسمي بنفسك.",
+    mismatch: "الرابط والرسالة غير متطابقين. تعامل مع الرسالة على أنها غير موثّقة.",
+    http: "لا تكتب معلومات في صفحة بدون HTTPS، وتذكّر أن HTTPS وحده لا يثبت أن الموقع حقيقي.",
+    secrecy: "من يطلب منك السرية يطلب منك ألا تتحقق. أخبر شخصًا تثق به.",
+    offer: "الأرباح المضمونة غير موجودة. لا ترسل مالًا لعروض استثمار أو وظائف مجهولة.",
+  },
+  en: {
+    creds: "No genuine service needs you to send or read out a one-time code, password or PIN.",
+    money: "Do not send money or “fees” because of a message. Confirm through an official number you look up yourself.",
+    bank: "Call your bank using the number on your card or its official app, not the number in the message.",
+    delivery: "Check the courier’s official app or website with a tracking number you already have.",
+    prize: "You cannot win a contest you never entered. Ignore it.",
+    callback: "Do not call back the number in the message. Look up the organization’s official number yourself.",
+    short: "Shortened link: ask the sender for the full address, or avoid it.",
+    ip: "A link made of numbers is rarely used by real organizations. Avoid it.",
+    userinfo: "Everything before the @ is ignored; the real destination is the part after it.",
+    brand: "A brand name inside a link does not make the link theirs. Open the brand’s official site yourself.",
+    mismatch: "The link and the message do not match. Treat the message as unverified.",
+    http: "Do not type information on a page without HTTPS. Remember HTTPS alone does not prove a site is genuine.",
+    secrecy: "Anyone asking you to keep it secret is asking you not to check. Tell someone you trust.",
+    offer: "Guaranteed profits do not exist. Do not send money to unknown investment or job offers.",
+  },
+};
+const AFTER = {
+  ar: ["أغلق الصفحة ولا تنزّل أو تثبّت أي شيء عرضته عليك.", "إذا كتبت كلمة مرور: غيّرها فورًا من الموقع الرسمي (ومن أي مكان استخدمتها فيه) وفعّل التحقق بخطوتين.", "إذا شاركت بيانات بطاقة أو بنك: تواصل مع البنك أو جهة إصدار البطاقة عبر الرقم الموجود على الموقع الرسمي أو على البطاقة.", "إذا شاركت رمز تحقق: اعتبر الحساب معرّضًا للخطر، وأمّنه، وسجّل الخروج من الأجهزة الأخرى.", "إذا ثبّتّ شيئًا: افحص الجهاز بأداة أمان موثوقة واطلب مساعدة مختص."],
+  en: ["Close the page and do not download or install anything it offered.", "If you typed a password: change it right away on the official site (and wherever you reused it) and turn on two-step verification.", "If you shared card or bank details: contact your bank or card issuer using the number on the official site or the card.", "If you shared a one-time code: treat that account as at risk, secure it, and sign out other devices.", "If you installed something: scan the device with a trusted security tool and ask a qualified person for help."],
+};
+/* Learning Center: always Arabic, regardless of the selected language */
+const GUIDE = [
+  ["فهم الروابط (URL)", ["خذ المثال https://shop.example.com:443/cart?item=5#top. «https» هو البروتوكول، و«shop.example.com» اسم الموقع، و«example.com» هو النطاق المسجّل و«shop» نطاق فرعي، و«/cart» المسار، و«?item=5» الاستعلام، و«#top» الجزء.", "معرفة النطاق المسجّل قد تكون صعبة بسبب اللواحق العامة مثل .co.uk. المهم هو الجزء الذي قبل اللاحقة العامة مباشرة، وليس الكلمات في أول العنوان."]],
+  ["كيف تتعرف على التصيد", ["من العلامات الشائعة: الاستعجال، والتهديد، والمكافآت غير المتوقعة، وطلب كلمات المرور أو الرموز، وروابط لا تطابق الجهة المذكورة. لا توجد علامة واحدة حاسمة؛ انظر إلى السياق كله."]],
+  ["المكالمات والأرقام", ["الرقم المجهول ليس بالضرورة احتيالًا، والرقم الذي يبدو مألوفًا يمكن تزييفه. لا تعاود الاتصال برقم ورد في رسالة مشبوهة؛ ابحث عن الرقم الرسمي للجهة بنفسك.", "أحيانًا يطلب المحتالون نقل المحادثة إلى واتساب أو تطبيق آخر. اعتبر طلب نقل المحادثة علامة تحذير."]],
+  ["تنبيهات البنوك والتوصيل المزيفة", ["يقلّد المحتالون تنبيهات البنوك وإشعارات الشحن لأن الناس يستجيبون بسرعة. البنوك وشركات الشحن الحقيقية ترسل تنبيهات أيضًا، لذا تحقق عبر تطبيقها أو موقعها الرسمي، باستخدام رقم أو رقم تتبع تملكه بالفعل."]],
+  ["رموز التحقق وكلمات المرور", ["لا تشارك كلمات المرور ولا الأرقام السرية ولا رموز التحقق أبدًا. الرمز يثبت أنك أنت؛ ومن يطلب منك قراءته يحاول استخدامه بدلًا منك."]],
+  ["شرح HTTPS", ["يشفّر HTTPS الاتصال. لكنه لا يثبت أن الموقع صادق، لأن أي شخص يمكنه الحصول على شهادة HTTPS."]],
+  ["الروابط المختصرة", ["الرابط المختصر يخفي وجهته. تعامل بحذر مع غير المتوقع منها، خاصة إذا اقترن بالاستعجال."]],
+  ["الهندسة الاجتماعية", ["يستخدم المهاجمون الاستعجال والخوف والسلطة والمكافآت المغرية للتأثير على قراراتك. التمهل دفاع قوي."]],
+  ["بعد استلام رسالة مشبوهة", ["لا تتعجل بالضغط. لا تشارك معلومات حساسة. تحقق بشكل مستقل. استخدم خيارات الإبلاغ الرسمية عند الحاجة. وإن لم تكن متأكدًا فاسأل شخصًا بالغًا موثوقًا أو مختصًا."]],
+];
+/* Quiz: [question, [options — the FIRST one is the correct answer], explanation, topic] */
+const QUIZ = {
+  ar: [
+    ["وصلتك رسالة: «تم قفل حسابك في بنك زنترو. سجّل الدخول خلال ساعة عبر zentro-bank.secure-login.invalid». (مثال وهمي) ما أفضل تصرف؟", ["أفتح تطبيق البنك الرسمي أو أكتب عنوانه المعروف بنفسي", "أضغط بسرعة قبل فوات الأوان", "أرد وأسأل إن كانت حقيقية", "أرسلها لأصدقائي"], "لا تعتمد على رابط الرسالة. تواصل مع الجهة بشكل مستقل.", "التحقق من الجهات"],
+    ["يظهر في موقع قفل HTTPS. ماذا يعني ذلك؟", ["الاتصال مشفّر، لكن الموقع قد يكون احتياليًا", "الموقع حقيقي", "الجهات الرسمية فحصت الموقع", "لا يعني شيئًا"], "HTTPS يحمي الاتصال وليس صدق الموقع.", "HTTPS"],
+    ["أي اسم موقع يتبع النطاق المسجّل example.org؟", ["login.example.org", "example.org.login-help.invalid", "example-org.verify.invalid", "news.invalid"], "النطاق المسجّل هو الجزء الذي قبل النهاية مباشرة. login.example.org نطاق فرعي من example.org؛ أما في الباقي فاسم example.org مجرد زينة.", "فهم الروابط"],
+    ["صديق كنت تتحدث معه أرسل: «صور الرحلة: https://photos.example.net/trip». ما التصرف المعقول؟", ["أنظر إلى السياق؛ وإن شعرت بشيء غريب أتأكد من صديقي بوسيلة أخرى", "هي احتيال لأنها تحتوي رابطًا", "هي آمنة لأنها من صديق", "أحذف كل رابط يصلني"], "السياق مهم. الرسائل المتوقعة أقل خطرًا، لكن الحسابات تُخترق، فتأكد عند الشك.", "تقييم السياق"],
+    ["شخص يطلب رمز التحقق الذي وصلك بالرسالة «لإلغاء طلب». ماذا تفعل؟", ["لا أشاركه أبدًا", "أشاركه إن كان مهذبًا", "أشارك نصفه", "أشاركه إن عرف اسمي"], "رمز التحقق يثبت أنك أنت. الخدمات الحقيقية لا تطلب منك قراءته.", "رموز التحقق"],
+    ["وصلك رابط مختصر غير متوقع. لماذا تحذر؟", ["لأنه يخفي الوجهة النهائية", "لأن الروابط المختصرة دائمًا خبيثة", "لأنها بطيئة", "لأنها تعمل على الهواتف فقط"], "الروابط المختصرة ليست دائمًا خبيثة، لكنك لا ترى إلى أين تؤدي.", "الروابط المختصرة"],
+    ["أي رسالة تستخدم أقوى أساليب الضغط؟", ["«إنذار أخير: ادفع 50 دولارًا الآن وإلا سيُحذف حسابك خلال 30 دقيقة!»", "«تم تأجيل الاجتماع إلى الثالثة.»", "«نشرتك البريدية جاهزة.»", "«ستصلك شحنتك الثلاثاء؛ تابعها في تطبيق شركة الشحن.»"], "التهديد مع مهلة قصيرة مع طلب دفع هو نمط ضغط كلاسيكي.", "الهندسة الاجتماعية"],
+    ["أداة فحص قالت «لا توجد علامات تحذير واضحة». ما الاستنتاج الصحيح؟", ["القواعد لم تجد شيئًا ملحوظًا، لكن الأمان غير مثبت", "من الآمن إدخال كلمة المرور", "الموقع موثّق", "المرسل موثّق"], "غياب التحذيرات ليس دليلًا على الأمان.", "حدود الأدوات"],
+    ["رسالة تقول: «شحنتك معلّقة. اتصل على +44 7700 900123 لدفع الرسوم». (مثال وهمي) ما التصرف الحكيم؟", ["أبحث عن رقم شركة الشحن أو تطبيقها الرسمي بنفسي بدل الاتصال بهذا الرقم", "أتصل فورًا حتى لا تُعاد الشحنة", "أتصل وأقرأ رقم بطاقتي", "أرد بعنواني"], "الأرقام داخل الرسائل المشبوهة يتحكم بها المرسل. استخدم بيانات اتصال رسمية تبحث عنها بنفسك.", "أرقام الهاتف"],
+    ["اتصل بك رقم مجهول. ماذا يمكنك أن تستنتج بأمان؟", ["لا شيء بعد: المجهول ليس بالضرورة احتيالًا، فلا أشارك أسرارًا وأتحقق ممن يدّعيه", "هو احتيال بالتأكيد", "هو آمن إذا بدا الرقم محليًا", "هو آمن إذا عرفوا اسمي"], "الأرقام المجهولة كثيرًا ما تكون بريئة، وبيانات المتصل يمكن تزييفها. احكم على الطلب وليس على الرقم.", "أرقام الهاتف"],
+  ],
+  en: [
+    ["A text says: “Your Zentro Bank account is locked. Log in within 1 hour at zentro-bank.secure-login.invalid.” (fictional) Best action?", ["Open the bank’s official app or type its known address yourself", "Click quickly before it is too late", "Reply and ask if it is real", "Forward it to friends"], "Never rely on the message’s link. Contact the organization independently.", "Verifying organizations"],
+    ["A site shows a padlock (HTTPS). What does that tell you?", ["The connection is encrypted, but the site could still be fraudulent", "The site is legitimate", "Authorities checked the site", "Nothing at all"], "HTTPS protects the connection, not the site’s honesty.", "HTTPS"],
+    ["Which hostname belongs to the registered domain example.org?", ["login.example.org", "example.org.login-help.invalid", "example-org.verify.invalid", "news.invalid"], "The registered domain is the part just before the ending. login.example.org is a subdomain of example.org; in the others, example.org is only decoration.", "Understanding URLs"],
+    ["A friend you were chatting with sends “Trip photos: https://photos.example.net/trip”. Most reasonable response?", ["Consider the context; if anything feels off, confirm with your friend another way", "It is a scam because it has a link", "It is safe because it came from a friend", "Delete every link you receive"], "Context matters. Expected messages are lower concern, but accounts get hacked, so confirm when unsure.", "Evaluating context"],
+    ["Someone asks for the code you just received by SMS “to cancel an order”. What do you do?", ["Never share it", "Share it if they are polite", "Share half of it", "Share it if they know your name"], "One-time codes prove it is you. Legitimate services do not ask you to read them out.", "One-time codes"],
+    ["You receive an unexpected shortened link. Why be careful?", ["It hides the final destination", "Short links are always malicious", "They load slowly", "They only work on phones"], "Short links are not always malicious, but you cannot see where they lead.", "Shortened links"],
+    ["Which message shows the strongest pressure tactics?", ["“FINAL WARNING: pay $50 now or your account is deleted in 30 minutes!”", "“Meeting moved to 3 PM.”", "“Your newsletter is ready.”", "“Your parcel arrives Tuesday; track it in the courier’s app.”"], "A threat plus a deadline plus a payment demand is a classic pressure pattern.", "Social engineering"],
+    ["A scanner says “No clear warning signs”. What is the right conclusion?", ["The rules found nothing notable, but safety is not proven", "It is safe to enter my password", "The site is verified", "The sender is verified"], "No warnings is not proof of safety.", "Limits of tools"],
+    ["A message says “Your parcel is held. Call +44 7700 900123 to pay the fee.” (fictional) What is wise?", ["Look up the courier’s official number or app yourself instead of calling that one", "Call at once so the parcel is not returned", "Call and read out your card number", "Reply with your address"], "Numbers inside a suspicious message are controlled by the sender. Use official contact details you find yourself.", "Phone numbers"],
+    ["An unknown number calls you. What can you safely conclude?", ["Nothing yet: unknown is not the same as a scam, so do not share secrets and verify who they say they are", "It is definitely a scam", "It is safe if the number looks local", "It is safe if they know your name"], "Unknown numbers are often harmless, and caller details can be faked. Judge the request, not the number.", "Phone numbers"],
+  ],
+};
+
+/* ================= UI ================= */
+function initUI() {
+  const $ = id => document.getElementById(id);
+  const el = (tag, c, txt, kids) => { const e = document.createElement(tag); if (c) e.className = c; if (txt != null) e.textContent = txt; (kids || []).forEach(k => e.append(k)); return e; };
+  const list = arr => el("ul", null, null, arr.map(x => el("li", null, x)));
+  const card = (kids, cls) => el("div", "card" + (cls ? " " + cls : ""), null, kids);
+  let state = null, runId = 0, verified = [];
+
+  /* ---- language ---- */
+  function applyLang(l) {
+    LANG = l;
+    const h = document.documentElement; h.lang = l; h.dir = l === "ar" ? "rtl" : "ltr";
+    document.title = t("TrustGuard AI — كاشف الاحتيال الشامل", "TrustGuard AI — Universal Scam Detector");
+    $("metaDesc").setAttribute("content", t("الصق رابطًا أو رسالة أو رقم هاتف مشبوهًا. يعرض TrustGuard AI علامات التحذير ويشرح أهميتها وما يجب أن تفعله.", "Paste a suspicious link, message or phone number. TrustGuard AI shows the warning signs, explains why they matter, and tells you what to do."));
+    document.querySelectorAll("[data-ph-ar]").forEach(e => e.setAttribute("placeholder", e.getAttribute("data-ph-" + l)));
+    document.querySelectorAll("[data-al-ar]").forEach(e => e.setAttribute("aria-label", e.getAttribute("data-al-" + l)));
+    $("langBtn").textContent = l === "ar" ? "English" : "عربي";
+    $("langBtn").setAttribute("aria-label", l === "ar" ? "Switch to English" : "التبديل إلى العربية");
+    $("langBtn").setAttribute("lang", l === "ar" ? "en" : "ar");
+    try { localStorage.setItem("tg-lang", l); } catch (e) { /* storage may be unavailable */ }
+    document.querySelectorAll(".err").forEach(e => { e.textContent = ""; });
+    if (!$("p-dashboard").hidden && state) renderDashboard();
+    quizShow();
+  }
+  $("langBtn").addEventListener("click", () => applyLang(LANG === "ar" ? "en" : "ar"));
+
+  /* ---- router ---- */
+  const ids = ["home", "dashboard", "link", "message", "phone", "learn", "quiz", "about"];
+  function route() {
+    let id = location.hash.slice(1); if (!ids.includes(id)) id = "home";
+    if (id === "dashboard" && !state) { location.replace("#home"); return; }
+    ids.forEach(p => { $("p-" + p).hidden = p !== id; });
+    document.querySelectorAll("nav a").forEach(a => a.setAttribute("aria-current", a.getAttribute("href") === "#" + id ? "page" : "false"));
+    $("nav").classList.remove("open"); $("menuBtn").setAttribute("aria-expanded", "false");
+    if (id === "dashboard") renderDashboard();
+    window.scrollTo(0, 0); const h = $("p-" + id).querySelector("h1"); if (h) h.focus();
+  }
+  $("menuBtn").addEventListener("click", () => { const o = $("nav").classList.toggle("open"); $("menuBtn").setAttribute("aria-expanded", String(o)); });
+
+  /* ---- run an analysis and show the dashboard ---- */
+  function run(input, mode, errId) {
+    $(errId).textContent = "";
+    const r = analyze(input, mode);
+    if (r.error) { $(errId).textContent = T(r.error); return; }
+    state = r; verified = []; const my = ++runId; location.hash = "#dashboard"; route();
+    runIntegrations(r).then(res => { if (my === runId) { verified = res; renderVerified(); } });
+  }
+
+  /* ---- dashboard ---- */
+  function segments(r) {
+    const marks = [];
+    r.msgHits.forEach(h => h.ranges.forEach(x => marks.push({ s: x.s, e: x.e, cls: "bad", title: T(h.name) })));
+    r.urls.forEach(u => marks.push({ s: u.s, e: u.e, cls: "url", title: t("رابط", "Link") }));
+    r.phones.forEach(p => marks.push({ s: p.s, e: p.e, cls: "ph", title: t("رقم هاتف", "Phone number"), repl: L(p.masked) }));
+    marks.sort((a, b) => a.s - b.s || (b.e - b.s) - (a.e - a.s));
+    const box = el("div", "preview"); let pos = 0;
+    marks.forEach(m => { if (m.s < pos) return; if (m.s > pos) box.append(r.text.slice(pos, m.s)); const k = el("mark", "mk " + m.cls, m.repl || r.text.slice(m.s, m.e)); k.title = m.title; box.append(k); pos = m.e; });
+    if (pos < r.text.length) box.append(r.text.slice(pos));
+    return box;
+  }
+  function renderDashboard() {
+    const r = state, box = $("dashBox"); box.replaceChildren();
+    const lv = { high: [t("مرتفعة", "High"), "▲"], mid: [t("متوسطة", "Medium"), "●"], low: [t("منخفضة", "Low"), "✓"] }[r.level];
+    const m = el("div", "meter", null, [el("i")]); m.firstChild.style.width = r.score + "%";
+    m.setAttribute("role", "img"); m.setAttribute("aria-label", t("الدرجة الداخلية التقديرية " + r.score + " من 100", "Internal heuristic score " + r.score + " out of 100"));
+    box.append(card([el("p", "cat", lv[1] + " " + t("مخاطر " + lv[0], lv[0] + " risk")), el("p", "verdict", VERDICT[LANG][r.level]), m,
+      el("p", "note", t("الدرجة الداخلية: " + r.score + "/100. تأتي من أوزان القواعد وليست احتمالًا. هذه علامات تحذير وليست بلاغات احتيال مؤكدة.", "Internal heuristic score: " + r.score + "/100. It comes from rule weights and is not a probability. These are warning signs, not verified scam reports."))], "res " + r.level));
+
+    const counts = LANG === "ar"
+      ? ["علامات التحذير: " + r.all.length, "الروابط: " + r.urls.length, "أرقام الهاتف: " + r.phones.length]
+      : [r.all.length + " warning sign" + (r.all.length === 1 ? "" : "s"), r.urls.length + " link" + (r.urls.length === 1 ? "" : "s"), r.phones.length + " phone number" + (r.phones.length === 1 ? "" : "s")];
+    box.append(card([el("h2", null, t("نوع المحتوى المكتشف", "Content detected")), el("p", null, T(r.label)), el("p", null, null, counts.map(c => el("span", "tag", c)))]));
+
+    box.append(card([el("h2", null, t("المحتوى الذي أدخلته مع تمييز العناصر", "Your content, highlighted")), segments(r),
+      el("p", "legend", t("خط متموّج = عبارة مشبوهة · خط متصل = رابط · خط متقطع = رقم هاتف (معروض مخفيًا جزئيًا). مرّر المؤشر على أي علامة لمعرفة نوعها.", "Wavy underline = suspicious phrase · solid underline = link · dashed underline = phone number (shown masked). Hover a mark for its label."))]));
+
+    if (r.phones.length) { const c = card([el("h2", null, t("أرقام الهاتف المكتشفة (مخفية جزئيًا)", "Detected phone numbers (masked)"))]);
+      r.phones.forEach(p => { const dl = el("dl", "kv");
+        const ccTxt = p.cc ? L("+" + p.cc) + " (" + T(p.country) + ")" + (p.cc === "1" ? t("، يشترك فيه عدة دول", ", shared by several countries") : "")
+          : p.intl ? t("غير موجود في جدول هذا النموذج", "Not recognized in this prototype’s table") : t("لم يُكتب، فلا يمكن تحديد الدولة", "Not given, so the country cannot be identified");
+        [[t("الرقم", "Number"), L(p.masked)], [t("الصيغة", "Format"), p.valid ? t("طول وبنية مقبولان", "Plausible length and structure") : t("ليست صيغة دولية صحيحة", "Not a valid international format")], [t("رمز الدولة", "Country code"), ccTxt]]
+          .forEach(([k, v]) => dl.append(el("dt", null, k), el("dd", null, v)));
+        if (p.hint) dl.append(el("dt", null, t("ملاحظة عن الشكل", "Format hint")), el("dd", null, T(p.hint)));
+        c.append(dl); p.problems.forEach(q => c.append(el("p", "note", "⚠ " + T(q.name) + ": " + T(q.detail)))); if (!p.problems.length) c.append(el("p", "note", t("لم تُوجد مشكلات في الصيغة.", "No format problems found.")));
+        c.append(el("hr")); });
+      c.append(el("p", "note", t("الرقم المجهول ليس بالضرورة احتيالًا، ويمكن للمحتالين تزييف الرقم الذي يظهر على شاشتك. هذه الأداة لا تتصل بأي رقم ولا ترسل له، ولا يوجد مصدر سمعة أرقام متصل.", "An unknown number is not automatically a scam, and scammers can fake the number that appears on your screen. This tool never calls or messages a number, and no reputation source is connected."))); box.append(c); }
+
+    if (r.urls.length) { const c = card([el("h2", null, t("الروابط المكتشفة (لا تُفتح أبدًا)", "Detected links (never opened)"))]);
+      r.urls.forEach(u => { c.append(el("div", "url", u.t));
+        if (u.error) c.append(el("p", "note", t("تعذّر تحليل هذا الرابط: ", "Could not analyze this link: ") + T(u.error)));
+        else { const dl = el("dl", "kv");
+          [[t("البروتوكول", "Protocol"), L(u.u.protocol) + (u.assumed ? t(" (مفترض: لم يُكتب)", " (assumed: none was written)") : "")], [t("اسم الموقع", "Hostname"), L(u.u.hostname)], [t("النطاق الرئيسي المتوقع (تقريبي)", "Likely main domain (approx.)"), L(u.domain)], [t("المنفذ", "Port"), u.u.port || t("(الافتراضي)", "(default)")], [t("المسار", "Path"), L(u.u.pathname)]]
+            .forEach(([k, v]) => dl.append(el("dt", null, k), el("dd", null, v))); c.append(dl);
+          c.append(el("p", "note", u.hits.length ? t("علامات التحذير في هذا الرابط: ", "Warning signs in this link: ") + u.hits.map(h => T(h.name)).join(t("؛ ", "; ")) + "." : t("لا توجد علامات تحذير في هذا الرابط.", "No warning signs found in this link."))); }
+        c.append(el("hr")); });
+      c.append(el("p", "note", t("النطاق الرئيسي هو الجزء الذي قبل نهاية العنوان مباشرة (مثل .com)، أما الأجزاء التي قبله فيختارها مالك النطاق بحرية. التخمين تقريبي لأن بعض النهايات من جزأين (مثل .co.uk).", "The main domain is the part just before the ending (such as .com); parts before it can be chosen freely by the domain’s owner. The guess is approximate because some endings have two parts (like .co.uk)."))); box.append(c); }
+
+    const ph = r.msgHits.filter(h => h.phrases.length);
+    if (ph.length) { const c = card([el("h2", null, t("العبارات المشبوهة التي وُجدت", "Suspicious phrases found"))]);
+      ph.forEach(h => c.append(el("div", "ind", null, [el("h3", null, T(h.name)), el("p", null, null, h.phrases.map(x => el("span", "phr", x))), el("p", "note", t("لماذا قد تكون خطرة: ", "Why it may be dangerous: ") + T(h.why))]))); box.append(c); }
+
+    const rest = r.all.filter(h => !(h.kind === "message" && h.phrases.length) && h.kind !== "combined");
+    if (rest.length) { const c = card([el("h2", null, t("علامات تحذير أخرى", "Other warning signs"))]);
+      rest.forEach(h => c.append(el("div", "ind", null, [el("h3", null, T(h.name)), h.detail ? el("p", null, T(h.detail) + (h.where && h.where.length ? " (" + h.where.join(t("، ", ", ")) + ")" : "")) : null, el("p", "note", t("لماذا قد يكون مهمًا: ", "Why it may matter: ") + T(h.why)), el("p", "note", t("ما لا يثبته: وحدها لا تثبت أنه احتيال.", "What it does not establish: on its own it does not prove a scam."))].filter(Boolean)))); box.append(c); }
+
+    if (r.combos.length) box.append(card([el("h2", null, t("المخاطر المجتمعة", "Combined risk")), ...r.combos.map(h => el("div", "ind", null, [el("h3", null, T(h.name)), el("p", null, T(h.why))])), el("p", "note", t("علامات التحذير حين تجتمع تكون أخطر منها حين تأتي منفردة.", "Warning signs that appear together are more concerning than the same signs alone."))]));
+
+    const top = r.all.slice().sort((a, b) => b.w - a.w).slice(0, 3).map(h => LANG === "ar" ? T(h.name) : T(h.name).charAt(0).toLowerCase() + T(h.name).slice(1));
+    box.append(card([el("h2", null, t("لماذا قد يكون هذا المحتوى خطرًا", "Why this may be dangerous")), el("p", null, r.all.length
+      ? t("أقوى علامات التحذير هنا: " + top.join("؛ ") + ". الاحتيال يجمع عادةً بين الضغط ومصدر يبدو موثوقًا ووسيلة تجعلك تسلّم مالًا أو رموزًا أو معلومات.", "The strongest warning signs here are: " + top.join("; ") + ". Scams usually combine pressure, a believable sender, and a way to make you hand over money, codes or information.")
+      : t("لم تجد القواعد المحلية علامات تحذير. توجد عمليات احتيال تبدو عادية، فاعتمد في قرارك على: هل كان الطلب متوقعًا؟ وهل يمكن التحقق منه؟", "The local rules found no warning signs. Scams that look ordinary exist, so base your decision on whether the request was expected and can be verified."))]));
+
+    const acts = BASE_STEPS[LANG][r.level].slice(); r.all.forEach(h => { const s = SPECIFIC[LANG][h.id]; if (s && !acts.includes(s)) acts.push(s); });
+    box.append(card([el("h2", null, t("إجراءات الأمان الموصى بها", "Recommended safety actions")), list(acts)], "res " + r.level));
+    box.append(card([el("h2", null, t("إذا كنت قد ضغطت أو اتصلت أو شاركت شيئًا بالفعل", "If you already clicked, called, or shared something")), list(AFTER[LANG])]));
+    const vb = card([el("h2", null, t("معلومات موثّقة", "Verified information")), el("p", null, t("لا يوجد مصدر سمعة موثّق متصل، ولذلك لا يوجد هنا أي بلاغ احتيال موثّق. كل ما سبق علامات تحذير وجدتها قواعد محلية.", "No verified reputation source is connected, so nothing here is a verified scam report. Everything above is a warning sign found by local rules."))]); vb.id = "verifBox"; box.append(vb);
+    box.append(el("p", "note", t("يعتمد هذا النموذج على تحليل بقواعد وليس على نموذج ذكاء اصطناعي مُدرَّب، ولا يستطيع كشف كل أنواع الاحتيال. استخدمه كتنبيه للتحقق وليس كإجابة نهائية.", "This prototype uses rule-based analysis, not a trained AI model, and cannot detect every scam. Use it as a prompt to verify, not as a final answer.")));
+    renderVerified();
+  }
+  function renderVerified() {
+    const vb = $("verifBox"); if (!vb || !verified.length) return;
+    vb.replaceChildren(el("h2", null, t("معلومات موثّقة (من مصادر متصلة)", "Verified information (from connected sources)")));
+    verified.forEach(x => vb.append(el("div", "ind", null, [el("h3", null, x.kind + " · " + x.subject + " · " + t("المصدر: ", "source: ") + x.source), el("p", null, T(x.summary) || (x.label ? t("تصنيف النموذج: ", "Classifier label: ") + x.label : t("راجع المصدر للتفاصيل.", "See source for details.")))])));
+    vb.append(el("p", "note", t("هذه النتائج صادرة عن المصادر المذكورة، وهي منفصلة عن علامات التحذير المبنية على القواعد أعلاه.", "These results come from the named sources. They are separate from the rule-based warning signs above.")));
+  }
+
+  /* ---- forms ---- */
+  $("uniForm").addEventListener("submit", e => { e.preventDefault(); run($("uniIn").value, "universal", "uniErr"); });
+  $("uniReset").addEventListener("click", () => { $("uniIn").value = ""; $("uniErr").textContent = ""; $("uniIn").focus(); });
+  document.querySelectorAll("[data-demo]").forEach(b => b.addEventListener("click", () => { $("uniIn").value = DEMOS[LANG][b.dataset.demo]; $("uniForm").requestSubmit(); }));
+  $("linkForm").addEventListener("submit", e => { e.preventDefault(); run($("linkIn").value.trim() + ($("linkMsg").value.trim() ? "\n" + $("linkMsg").value : ""), "link", "linkErr"); });
+  $("msgForm").addEventListener("submit", e => { e.preventDefault(); run($("msgIn").value, "message", "msgErr"); });
+  $("phoneForm").addEventListener("submit", e => { e.preventDefault(); run($("phoneIn").value, "phone", "phoneErr"); });
+  document.querySelectorAll("[data-clear]").forEach(b => b.addEventListener("click", () => b.dataset.clear.split(",").forEach(i => { const x = $(i); if ("value" in x) x.value = ""; else x.textContent = ""; })));
+  document.querySelectorAll("[data-fill]").forEach(b => b.addEventListener("click", () => { $(b.dataset.fill).value = b.dataset.val; }));
+  document.querySelectorAll("[data-demo-msg]").forEach(b => b.addEventListener("click", () => { $("msgIn").value = DEMOS[LANG][b.dataset.demoMsg]; }));
+  document.querySelectorAll("[data-again]").forEach(b => b.addEventListener("click", () => { state = null; $("uniIn").value = ""; }));
+
+  /* ---- Learning Center (Arabic only) ---- */
+  GUIDE.forEach(([title, ps]) => $("learnBox").append(el("details", null, null, [el("summary", null, title), ...ps.map(p => el("p", null, p))])));
+
+  /* ---- quiz (no backend; options shuffled once; survives language switches) ---- */
+  let qi = 0, picked = [], order = [];
+  const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+  function quizStart() { qi = 0; picked = []; order = QUIZ.ar.map(q => shuffle(q[1].map((_, i) => i))); quizShow(); }
+  function quizShow(focusNext) {
+    const Q = QUIZ[LANG], box = $("quizBox"); box.replaceChildren();
+    if (qi >= Q.length) {
+      const score = picked.filter(x => x === 0).length, missed = [...new Set(picked.map((x, i) => x === 0 ? null : Q[i][3]).filter(Boolean))];
+      const b = el("button", "btn", t("إعادة الاختبار", "Restart quiz")); b.type = "button"; b.addEventListener("click", quizStart);
+      box.append(el("h2", null, t("نتيجتك: " + score + " من " + Q.length, "Your score: " + score + " / " + Q.length)),
+        el("p", null, missed.length ? t("مواضيع تستحق المراجعة: ", "Topics to review: ") + missed.join(t("، ", ", ")) + "." : t("أجبت عن كل الأسئلة بشكل صحيح. استمر في التحقق بشكل مستقل!", "You answered every question correctly. Keep verifying independently!")), b);
+      return;
+    }
+    const q = Q[qi], done = picked[qi] !== undefined;
+    box.append(el("p", "note", t("السؤال " + (qi + 1) + " من " + Q.length, "Question " + (qi + 1) + " of " + Q.length)), el("div", "bar", null, [el("i")]), el("h2", null, q[0]));
+    box.querySelector(".bar i").style.width = (qi / Q.length * 100) + "%";
+    order[qi].forEach(idx => {
+      const b = el("button", "opt", q[1][idx]); b.type = "button";
+      if (done) { b.disabled = true; if (idx === 0) b.classList.add("right"); else if (idx === picked[qi]) b.classList.add("wrong"); }
+      else b.addEventListener("click", () => { picked[qi] = idx; quizShow(true); });
+      box.append(b);
+    });
+    const fb = el("div"); fb.setAttribute("role", "status");
+    if (done) {
+      const n = el("button", "btn", qi + 1 < Q.length ? t("السؤال التالي", "Next question") : t("اعرض نتيجتي", "See my score")); n.type = "button"; n.addEventListener("click", () => { qi++; quizShow(true); });
+      fb.append(el("p", null, (picked[qi] === 0 ? t("✓ إجابة صحيحة. ", "✓ Correct. ") : t("✗ ليست صحيحة. ", "✗ Not quite. ")) + q[2]), n);
+    }
+    box.append(fb);
+    if (done && focusNext) fb.querySelector("button").focus();
+  }
+  quizStart();
+
+  let start = "ar"; try { const s = localStorage.getItem("tg-lang"); if (s === "ar" || s === "en") start = s; } catch (e) { /* ignore */ }
+  applyLang(start);
+  window.addEventListener("hashchange", route); route();
+}
+if (typeof document !== "undefined") initUI();
+</script>
+</body>
+</html>
